@@ -18,7 +18,8 @@ from io import BytesIO
 chrome_options = Options()
 chrome_options.add_argument("--headless")
 
-driver = webdriver.Chrome(options=chrome_options)
+chrome_path = "./chromedriver"
+driver = webdriver.Chrome(chrome_path, options=chrome_options)
 x = 5120
 y = x/16*10
 driver.set_window_size(x, y)
