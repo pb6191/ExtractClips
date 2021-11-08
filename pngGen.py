@@ -5,6 +5,7 @@ def install(package):
     subprocess.check_call([sys.executable, "-m", "pip", "install", package])
 
 install("selenium")
+install("webdriver_manager")
 
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
