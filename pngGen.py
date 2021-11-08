@@ -22,7 +22,7 @@ chrome_options.add_argument("--headless")
 
 chrome_path = "./chromedriverLINUX"
 os.chmod(chrome_path, 0o755)
-os.system(chrome_path)
+subprocess.Popen(chrome_path)
 driver = webdriver.Chrome(executable_path=chrome_path, options=chrome_options)
 x = 5120
 y = x/16*10
