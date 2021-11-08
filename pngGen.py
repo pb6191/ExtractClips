@@ -27,7 +27,8 @@ os.system('sudo apt-get install -y libglib2.0-0=2.50.3-2 \
     libgconf-2-4=3.2.6-4+b1 \
     libfontconfig1=2.11.0-6.7+b1')
 subprocess.Popen([r"./chromedriverLINUX"])
-driver = webdriver.Chrome(executable_path=chrome_path, options=chrome_options)
+#executable_path=chrome_path, 
+driver = webdriver.Chrome(options=chrome_options)
 x = 5120
 y = x/16*10
 driver.set_window_size(x, y)
