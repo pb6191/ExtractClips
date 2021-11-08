@@ -20,7 +20,7 @@ import os
 chrome_options = Options()
 chrome_options.add_argument("--headless")
 
-chrome_path = "./chromedriverLINUX"
+chrome_path = "chromedriverLINUX"
 os.chmod(chrome_path, 0o755)
 #os.system('apt-get install -y libglib2.0-0=2.50.3-2 \
 #    libnss3=2:3.26.2-1.1+deb9u1 \
