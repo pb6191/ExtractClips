@@ -22,13 +22,18 @@ chrome_options.add_argument("--headless")
 
 chrome_path = "./chromedriverLINUX"
 os.chmod(chrome_path, 0o755)
-os.system('apt-get install -y libglib2.0-0=2.50.3-2 \
-    libnss3=2:3.26.2-1.1+deb9u1 \
-    libgconf-2-4=3.2.6-4+b1 \
-    libfontconfig1=2.11.0-6.7+b1 \
-    libgtk2.0-0:i386 \
-    libsm6:i386')
-subprocess.Popen([r"./chromedriverLINUX"])
+#os.system('apt-get install -y libglib2.0-0=2.50.3-2 \
+#    libnss3=2:3.26.2-1.1+deb9u1 \
+#    libgconf-2-4=3.2.6-4+b1 \
+#    libfontconfig1=2.11.0-6.7+b1 \
+#    libgtk2.0-0:i386 \
+#    libsm6:i386')
+os.system('apt-get update')
+os.system('apt-get install wget')
+os.system('apt-get install -y gconf-service libasound2 libatk1.0-0 libcairo2 libcups2 libfontconfig1 libgdk-pixbuf2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libxss1 fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils default-jdk')
+os.system('wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb')
+os.system('dpkg -i google-chrome-stable_current_amd64.deb; apt-get -fy install')
+#subprocess.Popen([r"./chromedriverLINUX"])
 #executable_path=chrome_path, 
 driver = webdriver.Chrome(options=chrome_options)
 x = 5120
