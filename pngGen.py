@@ -14,11 +14,14 @@ from selenium.webdriver.common.by import By
 from PIL import Image
 from selenium.webdriver.chrome.options import Options
 from io import BytesIO
+import os
+
 
 chrome_options = Options()
 chrome_options.add_argument("--headless")
 
 chrome_path = "./chromedriver.exe"
+os.chmod(chrome_path, 0o755)
 driver = webdriver.Chrome(executable_path=chrome_path, options=chrome_options)
 x = 5120
 y = x/16*10
