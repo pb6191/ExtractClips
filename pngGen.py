@@ -20,7 +20,7 @@ import os
 chrome_options = Options()
 chrome_options.add_argument("--headless")
 
-chrome_path = "./chromedriver.exe"
+chrome_path = "./chromedriverMAC"
 os.chmod(chrome_path, 0o755)
 driver = webdriver.Chrome(executable_path=chrome_path, options=chrome_options)
 x = 5120
