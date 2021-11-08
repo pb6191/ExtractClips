@@ -35,7 +35,7 @@ os.system('wget https://dl.google.com/linux/direct/google-chrome-stable_current_
 os.system('dpkg -i google-chrome-stable_current_amd64.deb; apt-get -fy install')
 #subprocess.Popen([r"./chromedriverLINUX"])
 #executable_path=chrome_path, 
-driver = webdriver.Chrome(options=chrome_options)
+driver = webdriver.Chrome(executable_path=chrome_path, options=chrome_options)
 x = 5120
 y = x/16*10
 driver.set_window_size(x, y)
