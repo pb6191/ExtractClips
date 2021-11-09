@@ -39,17 +39,12 @@ driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), o
 #executable_path=chrome_path, 
 
 #driver = webdriver.Chrome(executable_path=chrome_path, options=chrome_options)
-print("thiscod1")
 x = 5120
 y = x/16*10
-print("thiscod2")
 driver.set_window_size(x, y)
 driver.delete_all_cookies()
-print("thiscod3")
 url = "https://metatags.io/"
-print("thiscod4")
 driver.get(url)
-print("thiscod5")
 driver.execute_script("document.body.style.zoom = '200%'")
 time.sleep(5)
 
@@ -70,5 +65,6 @@ for i, h in enumerate(headlines):
     im = Image.open(BytesIO(im))
     im1 = im.crop((x/3.71, y/2.2, x/2.105, y/1.444))
     im1.save('extractedImgs/'+h.split('/')[-1]+'.png')
-
+    print("thiscod1")
 driver.quit()
+print("thiscod1ss")
