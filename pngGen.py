@@ -6,7 +6,7 @@ from PIL import Image
 from selenium.webdriver.chrome.options import Options
 from io import BytesIO
 import os
-
+print("thiscod")
 chrome_options = webdriver.ChromeOptions()
 chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
 chrome_options.add_argument("--headless")
