@@ -15,6 +15,13 @@ from PIL import Image
 from selenium.webdriver.chrome.options import Options
 from io import BytesIO
 import os
+from seleniumbase import BaseCase
+
+class ComponentsTest(BaseCase):
+    def test_basic(self):
+
+        # open the app and take a screenshot
+        self.open("https://google.com")
 
 
 chrome_options = Options()
