@@ -25,6 +25,7 @@ class ComponentsTest(BaseCase):
         self.open("https://google.com")
         time.sleep(10)  # give leaflet time to load from web
         self.save_screenshot("current-screenshot.png")
+        print("this cod")
 
 #chrome_options = Options()
 #chrome_options.add_argument("--headless")
