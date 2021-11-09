@@ -18,6 +18,8 @@ from io import BytesIO
 import os
 from seleniumbase import BaseCase
 
+subprocess.check_call([sys.executable, "-m", "seleniumbase", "install", "chromedriver"])
+
 class ComponentsTest(BaseCase):
     def test_basic(self):
 
@@ -27,7 +29,7 @@ class ComponentsTest(BaseCase):
         self.save_screenshot("current-screenshot.png")
         print("this cod")
 
-pytest test_basic
+
 #chrome_options = Options()
 #chrome_options.add_argument("--headless")
 
