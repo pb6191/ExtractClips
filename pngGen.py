@@ -6,7 +6,7 @@ from PIL import Image
 from selenium.webdriver.chrome.options import Options
 from io import BytesIO
 import os
-print("thiscod")
+
 chrome_options = webdriver.ChromeOptions()
 chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
 chrome_options.add_argument("--headless")
@@ -39,12 +39,17 @@ driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), o
 #executable_path=chrome_path, 
 
 #driver = webdriver.Chrome(executable_path=chrome_path, options=chrome_options)
+print("thiscod1")
 x = 5120
 y = x/16*10
+print("thiscod2")
 driver.set_window_size(x, y)
 driver.delete_all_cookies()
+print("thiscod3")
 url = "https://metatags.io/"
+print("thiscod4")
 driver.get(url)
+print("thiscod5")
 driver.execute_script("document.body.style.zoom = '200%'")
 time.sleep(5)
 
