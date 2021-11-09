@@ -1,13 +1,3 @@
-import subprocess
-import sys
-
-def install(package):
-    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
-
-install("webdriver_manager")
-install("selenium")
-install("seleniumbase")
-
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 import time
@@ -16,25 +6,21 @@ from PIL import Image
 from selenium.webdriver.chrome.options import Options
 from io import BytesIO
 import os
-from seleniumbase import BaseCase
 
-subprocess.check_call([sys.executable, "-m", "seleniumbase", "install", "chromedriver"])
-
-class ComponentsTest(BaseCase):
-    def test_basic(self):
-
-        # open the app and take a screenshot
-        self.open("https://google.com")
-        time.sleep(10)  # give leaflet time to load from web
-        self.save_screenshot("current-screenshot.png")
-        print("this cod")
-
-
-chrome_options = Options()
+chrome_options = webdriver.ChromeOptions()
+chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
 chrome_options.add_argument("--headless")
+chrome_options.add_argument("--disable-dev-shm-usage")
+chrome_options.add_argument("--no-sandbox")
+driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
 
-chrome_path = "./chromedriverLINUX"
-os.chmod(chrome_path, 0o755)
+# Now you can start using Selenium
+
+#chrome_options = Options()
+#chrome_options.add_argument("--headless")
+
+#chrome_path = "./chromedriverLINUX"
+#os.chmod(chrome_path, 0o755)
 
 #os.system('apt-get install -y libglib2.0-0=2.50.3-2 \
 #    libnss3=2:3.26.2-1.1+deb9u1 \
@@ -43,16 +29,16 @@ os.chmod(chrome_path, 0o755)
 #    libgtk2.0-0:i386 \
 #    libsm6:i386')
 
-os.system('apt-get update')
-os.system('apt-get install wget')
-os.system('apt-get install -y gconf-service libasound2 libatk1.0-0 libcairo2 libcups2 libfontconfig1 libgdk-pixbuf2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libxss1 fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils default-jdk')
-os.system('wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb')
-os.system('dpkg -i google-chrome-stable_current_amd64.deb; apt-get -fy install')
+#os.system('apt-get update')
+#os.system('apt-get install wget')
+#os.system('apt-get install -y gconf-service libasound2 libatk1.0-0 libcairo2 libcups2 libfontconfig1 libgdk-pixbuf2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libxss1 fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils default-jdk')
+#os.system('wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb')
+#os.system('dpkg -i google-chrome-stable_current_amd64.deb; apt-get -fy install')
 
 #subprocess.Popen([r"./chromedriverLINUX"])
 #executable_path=chrome_path, 
 
-driver = webdriver.Chrome(executable_path=chrome_path, options=chrome_options)
+#driver = webdriver.Chrome(executable_path=chrome_path, options=chrome_options)
 x = 5120
 y = x/16*10
 driver.set_window_size(x, y)
