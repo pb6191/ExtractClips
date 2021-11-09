@@ -27,6 +27,7 @@ class ComponentsTest(BaseCase):
         self.save_screenshot("current-screenshot.png")
         print("this cod")
 
+pytest test_basic
 #chrome_options = Options()
 #chrome_options.add_argument("--headless")
 
