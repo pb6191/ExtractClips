@@ -20,6 +20,9 @@ def my_link():
 
   return 'Click.'
 
+if __name__ == '__main__':
+  app.run(debug=True)
+  
 chrome_options = webdriver.ChromeOptions()
 chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
 chrome_options.add_argument("--headless")
