@@ -1,1 +1,1 @@
-web: python pngGen.py
+web: python app.py
