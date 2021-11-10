@@ -33,6 +33,7 @@ def my_link():
   driver.delete_all_cookies()
   url = "https://metatags.io/"
   driver.get(url)
+  print(driver.find_element(By.XPATH, "//div[@class = 'card-seo-facebook']").text)
   im0 = driver.get_screenshot_as_png()
   driver.execute_script("document.body.style.zoom = '200%'")
   time.sleep(5)
