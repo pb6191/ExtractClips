@@ -23,8 +23,8 @@ def my_link():
   chrome_options = webdriver.ChromeOptions()
   chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
   chrome_options.add_argument("--headless")
-  chrome_options.add_argument("--disable-dev-shm-usage")
-  chrome_options.add_argument("--no-sandbox")
+  #chrome_options.add_argument("--disable-dev-shm-usage")
+  #chrome_options.add_argument("--no-sandbox")
   driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), options=chrome_options)
 
   x = 5120
@@ -33,6 +33,7 @@ def my_link():
   driver.delete_all_cookies()
   url = "https://metatags.io/"
   driver.get(url)
+  im0 = driver.get_screenshot_as_png()
   driver.execute_script("document.body.style.zoom = '200%'")
   time.sleep(5)
 
@@ -55,7 +56,7 @@ def my_link():
   driver.quit()
   print("thiscod1ss")
 
-  return send_file(im, as_attachment=True, attachment_filename='abc.png')
+  return send_file(im0, as_attachment=True, attachment_filename='abc.png')
 
 if __name__ == '__main__':
   print("thiscod1ss00")
