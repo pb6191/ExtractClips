@@ -2,7 +2,8 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 import time
 from selenium.webdriver.common.by import By
-import Image
+import PIL
+from PIL import Image
 from selenium.webdriver.chrome.options import Options
 from io import BytesIO
 import os
