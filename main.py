@@ -55,7 +55,7 @@ def my_link():
   driver.quit()
   print("thiscod1ss")
 
-  return send_file(im1, as_attachment=True, attachment_filename='abc.png')
+  return send_file(im, as_attachment=True, attachment_filename='abc.png')
 
 if __name__ == '__main__':
   print("thiscod1ss00")
