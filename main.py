@@ -38,9 +38,7 @@ def my_link():
 
   headlines = [
       "https://www.nytimes.com/2021/11/06/opinion/biden-infrastructure-deal.html",
-      "https://www.nytimes.com/2021/11/06/us/politics/infrastructure-black-caucus-vote.html",
 
-  "https://www.nytimes.com/2021/11/06/us/dark-sky-parks-us.html"
   ]
 
   for i, h in enumerate(headlines):
@@ -57,7 +55,7 @@ def my_link():
   driver.quit()
   print("thiscod1ss")
 
-  return 'Click.'
+  return im1
 
 if __name__ == '__main__':
   print("thiscod1ss00")
