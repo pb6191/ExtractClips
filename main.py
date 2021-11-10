@@ -35,6 +35,7 @@ def my_link():
   driver.get(url)
   print(driver.find_element(By.XPATH, "//div[@class = 'card-seo-facebook']").text)
   im0 = driver.get_screenshot_as_png()
+  im0 = Image.open(BytesIO(im0))
   driver.execute_script("document.body.style.zoom = '200%'")
   time.sleep(5)
 
@@ -57,7 +58,7 @@ def my_link():
   driver.quit()
   print("thiscod1ss")
 
-  return send_file(im0, as_attachment=True, attachment_filename='abc.png')
+  return send_file(im0, as_attachment=True, download_name='abc.png')
 
 if __name__ == '__main__':
   print("thiscod1ss00")
