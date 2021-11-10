@@ -16,8 +16,9 @@ app = Flask(__name__)
 def index():
   return render_template('index.html')
 
-@app.route('/my-link/')
+@app.route('/my-link/', methods=['POST'])
 def my_link():
+  text = request.form['text']
   print ('I got clicked!')
 
   chrome_options = webdriver.ChromeOptions()
@@ -39,10 +40,7 @@ def my_link():
   driver.execute_script("document.body.style.zoom = '200%'")
   time.sleep(5)
 
-  headlines = [
-      "https://www.nytimes.com/2021/11/06/opinion/biden-infrastructure-deal.html",
-
-  ]
+  headlines = text.split(",")
 
   for i, h in enumerate(headlines):
       driver.find_element(By.XPATH, "/html/body/section[1]/input").clear()
