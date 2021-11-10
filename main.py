@@ -18,17 +18,48 @@ def index():
 def my_link():
   print ('I got clicked!')
 
+  chrome_options = webdriver.ChromeOptions()
+  chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+  chrome_options.add_argument("--headless")
+  chrome_options.add_argument("--disable-dev-shm-usage")
+  chrome_options.add_argument("--no-sandbox")
+  driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), options=chrome_options)
+
+  x = 5120
+  y = x/16*10
+  driver.set_window_size(x, y)
+  driver.delete_all_cookies()
+  url = "https://metatags.io/"
+  driver.get(url)
+  driver.execute_script("document.body.style.zoom = '200%'")
+  time.sleep(5)
+
+  headlines = [
+      "https://www.nytimes.com/2021/11/06/opinion/biden-infrastructure-deal.html",
+      "https://www.nytimes.com/2021/11/06/us/politics/infrastructure-black-caucus-vote.html",
+
+  "https://www.nytimes.com/2021/11/06/us/dark-sky-parks-us.html"
+  ]
+
+  for i, h in enumerate(headlines):
+      driver.find_element(By.XPATH, "/html/body/section[1]/input").clear()
+      driver.find_element(By.XPATH, "/html/body/section[1]/input").send_keys(h)
+
+      time.sleep(2)
+
+      im = driver.get_screenshot_as_png()
+      im = Image.open(BytesIO(im))
+      im1 = im.crop((x/3.71, y/2.2, x/2.105, y/1.444))
+      im1.save('extractedImgs/'+h.split('/')[-1]+'.png')
+      print("thiscod1")
+  driver.quit()
+  print("thiscod1ss")
+
   return 'Click.'
 
 if __name__ == '__main__':
   app.run(debug=True)
   
-chrome_options = webdriver.ChromeOptions()
-chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
-chrome_options.add_argument("--headless")
-chrome_options.add_argument("--disable-dev-shm-usage")
-chrome_options.add_argument("--no-sandbox")
-driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), options=chrome_options)
 
 # Now you can start using Selenium
 
@@ -55,32 +86,3 @@ driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), o
 #executable_path=chrome_path, 
 
 #driver = webdriver.Chrome(executable_path=chrome_path, options=chrome_options)
-x = 5120
-y = x/16*10
-driver.set_window_size(x, y)
-driver.delete_all_cookies()
-url = "https://metatags.io/"
-driver.get(url)
-driver.execute_script("document.body.style.zoom = '200%'")
-time.sleep(5)
-
-headlines = [
-    "https://www.nytimes.com/2021/11/06/opinion/biden-infrastructure-deal.html",
-    "https://www.nytimes.com/2021/11/06/us/politics/infrastructure-black-caucus-vote.html",
-
-"https://www.nytimes.com/2021/11/06/us/dark-sky-parks-us.html"
-]
-
-for i, h in enumerate(headlines):
-    driver.find_element(By.XPATH, "/html/body/section[1]/input").clear()
-    driver.find_element(By.XPATH, "/html/body/section[1]/input").send_keys(h)
-
-    time.sleep(2)
-
-    im = driver.get_screenshot_as_png()
-    im = Image.open(BytesIO(im))
-    im1 = im.crop((x/3.71, y/2.2, x/2.105, y/1.444))
-    im1.save('extractedImgs/'+h.split('/')[-1]+'.png')
-    print("thiscod1")
-driver.quit()
-print("thiscod1ss")
