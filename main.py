@@ -57,6 +57,7 @@ def my_link():
   driver.quit()
   print("thiscod1ss")
   shutil.make_archive("clipsArchive", 'zip', "extractedImgs")
+  shutil.rmtree("extractedImgs")
   return send_file('clipsArchive.zip', as_attachment=True, download_name='clipsArchive.zip')
 
 if __name__ == '__main__':
