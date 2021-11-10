@@ -7,6 +7,7 @@ from PIL import Image
 from selenium.webdriver.chrome.options import Options
 from io import BytesIO
 import os
+from os import environ
 from flask import Flask, render_template
 
 app = Flask(__name__)
@@ -59,7 +60,9 @@ def my_link():
   return 'Click.'
 
 if __name__ == '__main__':
-  app.run(debug=True)
+  print("thiscod1ss00")
+  app.run(debug=True, host='0.0.0.0', port=environ.get("PORT", 5000))
+  print("thiscod1ss99")
   
 
 # Now you can start using Selenium
