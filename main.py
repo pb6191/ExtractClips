@@ -9,6 +9,7 @@ from io import BytesIO
 import os
 from os import environ
 from flask import Flask,render_template,flash,request,redirect,send_file
+import shutil
 
 app = Flask(__name__)
 
@@ -35,8 +36,8 @@ def my_link():
   url = "https://metatags.io/"
   driver.get(url)
   print(driver.find_element(By.XPATH, "//div[@class = 'card-seo-facebook']").text)
-  im0 = driver.get_screenshot_as_png()
-  im0 = Image.open(BytesIO(im0))
+
+  # make 150%
   driver.execute_script("document.body.style.zoom = '200%'")
   time.sleep(5)
 
@@ -51,13 +52,12 @@ def my_link():
       im = driver.get_screenshot_as_png()
       im = Image.open(BytesIO(im))
       im1 = im.crop((x/3.71, y/2.2, x/2.105, y/1.444))
-      #im1.save('extractedImgs/'+h.split('/')[-1]+'.png')
-      im1.save('abc.png')
+      im1.save('extractedImgs/'+h.split('/')[-1]+'.png')
       print("thiscod1")
   driver.quit()
   print("thiscod1ss")
-
-  return send_file('abc.png', as_attachment=True, download_name='abc.png')
+  shutil.make_archive("clipsArchive", 'zip', "extractedImgs")
+  return send_file('clipsArchive.zip', as_attachment=True, download_name='clipsArchive.zip')
 
 if __name__ == '__main__':
   print("thiscod1ss00")
