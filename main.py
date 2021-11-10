@@ -53,12 +53,13 @@ def my_link():
       im = driver.get_screenshot_as_png()
       im = Image.open(BytesIO(im))
       im1 = im.crop((x/3.71, y/2.2, x/2.105, y/1.444))
-      im1.save('extractedImgs/'+h.split('/')[-1]+'.png')
+      #im1.save('extractedImgs/'+h.split('/')[-1]+'.png')
+      im1.save('abc.png')
       print("thiscod1")
   driver.quit()
   print("thiscod1ss")
 
-  return send_file(im0, as_attachment=True, download_name='abc.png')
+  return send_file('abc.png', as_attachment=True, download_name='abc.png')
 
 if __name__ == '__main__':
   print("thiscod1ss00")
