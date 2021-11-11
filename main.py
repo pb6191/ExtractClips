@@ -55,7 +55,7 @@ def my_link():
       im = driver.get_screenshot_as_png()
       im = Image.open(BytesIO(im))
       im1 = im.crop((x/3.71, y/2.2, x/2.105, y/1.444))
-      im1.save('extractedImgs/'+(h.split('/')[-1]).replace(".html", "")+'.png')
+      im1.save('extractedImgs/'+(h.split('/')[-1]).replace(".html", ""),'png')
 
     driver.quit()
     shutil.make_archive("clipsArchive", 'zip', "extractedImgs")
