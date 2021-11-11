@@ -39,7 +39,8 @@ def my_link():
     shutil.rmtree("extractedImgs")
   os.mkdir("extractedImgs", 0o777)
   headlines = text.split('\n')
-
+  headlines = list(filter(None, headlines))
+  headlines = list(set(headlines))
   for i, h in enumerate(headlines):
       driver.find_element(By.XPATH, "/html/body/section[1]/input").clear()
       driver.find_element(By.XPATH, "/html/body/section[1]/input").send_keys(h)
