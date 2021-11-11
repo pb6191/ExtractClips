@@ -12,7 +12,7 @@ import os
 from os import environ
 from flask import Flask,render_template,flash,request,redirect,send_file
 import shutil
-from sklearn.externals.joblib import Parallel, delayed
+from joblib import Parallel, delayed
 
 app = Flask(__name__)
 x = 3840
