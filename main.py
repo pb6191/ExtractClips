@@ -22,7 +22,7 @@ def index():
 @app.route('/my-link/', methods=['POST'])
 def my_link():
   text = request.form['text']
-  return render_template('index.html', message="Processing...")
+  render_template('index.html', message="Processing...")
   # implicit waits and parallelization
   chrome_options = webdriver.ChromeOptions()
   chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
