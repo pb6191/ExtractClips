@@ -61,7 +61,7 @@ def my_link():
     shutil.make_archive("clipsArchive", 'zip', "extractedImgs")
     shutil.rmtree("extractedImgs")
     yield send_file('clipsArchive.zip', as_attachment=True, download_name='clipsArchive.zip')
-  return Response(generate())
+  return Response(stream_with_context(generate()))
 
 if __name__ == '__main__':
  app.run(debug=True, host='0.0.0.0', port=environ.get("PORT", 5000))
