@@ -22,6 +22,7 @@ class Compute(Thread):
     Thread.__init__(self)
     self.request = request
 
+  @app.route('/my-link/', methods=['POST'])
   def run(self):
     global text
     print("start")
@@ -62,7 +63,7 @@ class Compute(Thread):
     shutil.rmtree("extractedImgs")
     #return send_file('clipsArchive.zip', as_attachment=True, download_name='clipsArchive.zip'), render_template('index.html', message="Idle.")
     with app.app_context(), app.test_request_context():  
-      index()
+      return send_file('clipsArchive.zip', as_attachment=True, download_name='clipsArchive.zip'), render_template('index.html', message="Idle.")
 
 @app.route('/')
 def index():
