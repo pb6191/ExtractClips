@@ -14,6 +14,7 @@ from flask import Flask,render_template,flash,request,redirect,send_file
 import shutil
 from threading import Thread
 
+global text
 app = Flask(__name__)
 
 class Compute(Thread):
@@ -22,6 +23,7 @@ class Compute(Thread):
     self.request = request
 
   def run(self):
+    global text
     print("start")
     chrome_options = webdriver.ChromeOptions()
     chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
@@ -69,6 +71,7 @@ def index():
 
 @app.route('/my-link/', methods=['POST'])
 def my_link():
+  global text
   text = request.form['text']
   thread_a = Compute(request.__copy__())
   thread_a.start()
