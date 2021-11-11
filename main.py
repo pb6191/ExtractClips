@@ -20,14 +20,14 @@ def index():
 @app.route('/my-link/', methods=['POST'])
 def my_link():
   text = request.form['text']
-
+  # implicit waits and parallelization
   chrome_options = webdriver.ChromeOptions()
   chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
   chrome_options.add_argument("--headless")
   chrome_options.add_argument("--disable-dev-shm-usage")
   chrome_options.add_argument("--no-sandbox")
   driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), options=chrome_options)
-
+  driver.implicitly_wait(5)
   x = 3840
   y = x/16*10
   driver.set_window_size(x, y)
@@ -35,7 +35,6 @@ def my_link():
   url = "https://metatags.io/"
   driver.get(url)
   driver.execute_script("document.body.style.zoom = '150%'")
-  time.sleep(5)
   if (os.path.isdir('extractedImgs')):
     shutil.rmtree("extractedImgs")
   os.mkdir("extractedImgs", 0o777)
@@ -44,9 +43,6 @@ def my_link():
   for i, h in enumerate(headlines):
       driver.find_element(By.XPATH, "/html/body/section[1]/input").clear()
       driver.find_element(By.XPATH, "/html/body/section[1]/input").send_keys(h)
-
-      time.sleep(2)
-
       im = driver.get_screenshot_as_png()
       im = Image.open(BytesIO(im))
       im1 = im.crop((x/3.71, y/2.2, x/2.105, y/1.444))
