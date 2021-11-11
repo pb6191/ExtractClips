@@ -21,31 +21,31 @@ def index():
 
 @app.route('/my-link/', methods=['POST'])
 def my_link():
- text = request.form['text']
- # implicit waits and parallelization
- chrome_options = webdriver.ChromeOptions()
- chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
- chrome_options.add_argument("--headless")
- chrome_options.add_argument("--disable-dev-shm-usage")
- chrome_options.add_argument("--no-sandbox")
- driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), options=chrome_options)
- driver.implicitly_wait(5)
- x = 3840
- y = x/16*10
- driver.set_window_size(x, y)
- driver.delete_all_cookies()
- url = "https://metatags.io/"
- driver.get(url)
- WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, "/html/body/section[1]/input")))
- time.sleep(5)
- driver.execute_script("document.body.style.zoom = '150%'")
- if (os.path.isdir('extractedImgs')):
-   shutil.rmtree("extractedImgs")
- os.mkdir("extractedImgs", 0o777)
- headlines = text.splitlines()
- headlines = list(filter(None, headlines))
- headlines = list(set(headlines))
   def generate():
+    text = request.form['text']
+    # implicit waits and parallelization
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--no-sandbox")
+    driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), options=chrome_options)
+    driver.implicitly_wait(5)
+    x = 3840
+    y = x/16*10
+    driver.set_window_size(x, y)
+    driver.delete_all_cookies()
+    url = "https://metatags.io/"
+    driver.get(url)
+    WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, "/html/body/section[1]/input")))
+    time.sleep(5)
+    driver.execute_script("document.body.style.zoom = '150%'")
+    if (os.path.isdir('extractedImgs')):
+      shutil.rmtree("extractedImgs")
+    os.mkdir("extractedImgs", 0o777)
+    headlines = text.splitlines()
+    headlines = list(filter(None, headlines))
+    headlines = list(set(headlines))
     for i, h in enumerate(headlines):
       yield 'Processing...'
       driver.find_element(By.XPATH, "/html/body/section[1]/input").clear()
