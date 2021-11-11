@@ -20,7 +20,7 @@ def index():
  return render_template('index.html', message="Idle.")
 @app.route('/my-link2/', methods=['POST'])
 def my_link2():
-  return send_file('clipsArchive.zip', as_attachment=True, download_name='clipsArchive.zip'), render_template('index.html', message="Idle.")
+  return send_file('clipsArchive.zip', as_attachment=True, download_name='clipsArchive.zip')
 
 @app.route('/my-link/', methods=['POST'])
 def my_link():
