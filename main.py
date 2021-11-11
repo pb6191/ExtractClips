@@ -17,7 +17,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
- return render_template('index.html')
+ return render_template('index.html', message="Idle.")
 
 @app.route('/my-link/', methods=['POST'])
 def my_link():
@@ -60,7 +60,8 @@ def my_link():
     driver.quit()
     shutil.make_archive("clipsArchive", 'zip', "extractedImgs")
     shutil.rmtree("extractedImgs")
-    return send_file('clipsArchive.zip', as_attachment=True, download_name='clipsArchive.zip')
+    yield render_template('index.html', message="Idle.")
+    #return send_file('clipsArchive.zip', as_attachment=True, download_name='clipsArchive.zip')
   return Response(stream_with_context(generate()))
 
 if __name__ == '__main__':
