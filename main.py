@@ -77,7 +77,7 @@ def my_link():
   text = request.form['text']
   thread_a = Compute(request.__copy__())
   thread_a.start()
-  return render_template('index.html', message="Processing...")
+  return "Processing in background", 200
 
 if __name__ == '__main__':
   app.run(debug=True, threaded=True, host='0.0.0.0', port=environ.get("PORT", 5000))
