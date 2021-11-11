@@ -38,6 +38,7 @@ def my_link():
   time.sleep(5)
   if (os.path.isdir('extractedImgs')):
     shutil.rmtree("extractedImgs")
+  os.mkdir("extractedImgs", 0o777)
   headlines = text.split('\n')
 
   for i, h in enumerate(headlines):
@@ -49,7 +50,6 @@ def my_link():
       im = driver.get_screenshot_as_png()
       im = Image.open(BytesIO(im))
       im1 = im.crop((x/3.71, y/2.2, x/2.105, y/1.444))
-      os.mkdir("extractedImgs", 0o777)
       im1.save('extractedImgs/'+(h.split('/')[-1]).replace(".html", "")+'.png')
 
   driver.quit()
