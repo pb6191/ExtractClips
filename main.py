@@ -34,11 +34,11 @@ def my_link():
   driver.delete_all_cookies()
   url = "https://metatags.io/"
   driver.get(url)
-  # make 150%
   driver.execute_script("document.body.style.zoom = '150%'")
   time.sleep(5)
-
-  headlines = text.split(",")
+  if (os.path.isdir('extractedImgs')):
+    shutil.rmtree("extractedImgs")
+  headlines = text.split('\n')
 
   for i, h in enumerate(headlines):
       driver.find_element(By.XPATH, "/html/body/section[1]/input").clear()
@@ -49,10 +49,8 @@ def my_link():
       im = driver.get_screenshot_as_png()
       im = Image.open(BytesIO(im))
       im1 = im.crop((x/3.71, y/2.2, x/2.105, y/1.444))
-      if (os.path.isdir('extractedImgs')):
-        shutil.rmtree("extractedImgs")
       os.mkdir("extractedImgs", 0o777)
-      im1.save('extractedImgs/'+h.split('/')[-1]+'.png')
+      im1.save('extractedImgs/'+h.split('/')[-1].replace(".html", "")+'.png')
 
   driver.quit()
   shutil.make_archive("clipsArchive", 'zip', "extractedImgs")
