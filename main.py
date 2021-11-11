@@ -22,7 +22,7 @@ class Compute(Thread):
     Thread.__init__(self)
     self.request = request
 
-  @app.route('/my-link/', methods=['POST'])
+  @app.route('/', methods=['GET','POST'])
   def run(self):
     global text
     print("start")
