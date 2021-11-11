@@ -63,9 +63,10 @@ class Compute(Thread):
     #return send_file('clipsArchive.zip', as_attachment=True, download_name='clipsArchive.zip'), render_template('index.html', message="Idle.")
     with app.app_context(), app.test_request_context():
       print("gg5445g")
-      return send_file('clipsArchive.zip', as_attachment=True, download_name='clipsArchive.zip'), render_template('index.html', message="Idle.")
+      def events():
+        return send_file('clipsArchive.zip', as_attachment=True, download_name='clipsArchive.zip'), render_template('index.html', message="Idle.")
       print("4334grere")
-      
+
 @app.route('/')
 def index():
   return render_template('index.html', message="Idle.")
