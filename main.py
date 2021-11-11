@@ -45,8 +45,8 @@ def my_link():
  headlines = text.splitlines()
  headlines = list(filter(None, headlines))
  headlines = list(set(headlines))
- def generate():
-  for i, h in enumerate(headlines):
+  def generate():
+    for i, h in enumerate(headlines):
       yield 'Processing...'
       driver.find_element(By.XPATH, "/html/body/section[1]/input").clear()
       driver.find_element(By.XPATH, "/html/body/section[1]/input").send_keys(h)
@@ -57,11 +57,11 @@ def my_link():
       im1 = im.crop((x/3.71, y/2.2, x/2.105, y/1.444))
       im1.save('extractedImgs/'+(h.split('/')[-1]).replace(".html", "")+'.png')
 
-  driver.quit()
-  shutil.make_archive("clipsArchive", 'zip', "extractedImgs")
-  shutil.rmtree("extractedImgs")
-  yield send_file('clipsArchive.zip', as_attachment=True, download_name='clipsArchive.zip')
-return Response(generate())
+    driver.quit()
+    shutil.make_archive("clipsArchive", 'zip', "extractedImgs")
+    shutil.rmtree("extractedImgs")
+    yield send_file('clipsArchive.zip', as_attachment=True, download_name='clipsArchive.zip')
+  return Response(generate())
 
 if __name__ == '__main__':
  app.run(debug=True, host='0.0.0.0', port=environ.get("PORT", 5000))
