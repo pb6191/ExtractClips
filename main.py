@@ -10,7 +10,7 @@ from selenium.webdriver.chrome.options import Options
 from io import BytesIO
 import os
 from os import environ
-from flask import Flask,render_template,flash,request,redirect,send_file
+from flask import Flask,render_template,flash,request,redirect,send_file,copy_current_request_context
 import shutil
 from threading import Thread
 
@@ -18,6 +18,7 @@ global text
 app = Flask(__name__)
 
 class Compute(Thread):
+  @copy_current_request_context
   def __init__(self, request):
     Thread.__init__(self)
     self.request = request
@@ -60,7 +61,7 @@ class Compute(Thread):
     driver.quit()
     shutil.make_archive("clipsArchive", 'zip', "extractedImgs")
     shutil.rmtree("extractedImgs")
-    return send_file('clipsArchive.zip', as_attachment=True, download_name='clipsArchive.zip')
+    return send_file('clipsArchive.zip', as_attachment=True, download_name='clipsArchive.zip'), render_template('index.html', message="Idle.")
 
     print(self.request)
     print("done")
