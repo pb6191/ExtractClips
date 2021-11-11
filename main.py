@@ -18,10 +18,10 @@ global text
 app = Flask(__name__)
 
 class Compute(Thread):
+  @app.route('/my-link/', methods=['POST'])
   def __init__(self, request):
     Thread.__init__(self)
-    with app.app_context():
-      self.request = request
+    self.request = request
 
   def run(self):
     global text
