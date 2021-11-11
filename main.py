@@ -60,7 +60,7 @@ def my_link():
     driver.quit()
     shutil.make_archive("clipsArchive", 'zip', "extractedImgs")
     shutil.rmtree("extractedImgs")
-    yield send_file('clipsArchive.zip', as_attachment=True, download_name='clipsArchive.zip')
+    return send_file('clipsArchive.zip', as_attachment=True, download_name='clipsArchive.zip')
   return Response(stream_with_context(generate()))
 
 if __name__ == '__main__':
