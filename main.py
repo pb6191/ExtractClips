@@ -63,8 +63,7 @@ class Compute(Thread):
     #return send_file('clipsArchive.zip', as_attachment=True, download_name='clipsArchive.zip'), render_template('index.html', message="Idle.")
     with app.app_context(), app.test_request_context():  
       print("sidifsdf")
-      return send_file('clipsArchive.zip', as_attachment=True, download_name='clipsArchive.zip'), render_template('index.html', message="Idle.")
-      return render_template('index.html', message="Idle.")
+      return render_template('index2.html', message="Idle.")
     print(self.request)
     print("done")
 
