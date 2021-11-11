@@ -20,7 +20,7 @@ app = Flask(__name__)
 class Compute(Thread):
   def __init__(self, request):
     Thread.__init__(self)
-    with app.test_request_context():
+    with app.app_context():
       self.request = request
 
   def run(self):
