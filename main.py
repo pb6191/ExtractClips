@@ -38,7 +38,7 @@ def my_link():
   if (os.path.isdir('extractedImgs')):
     shutil.rmtree("extractedImgs")
   os.mkdir("extractedImgs", 0o777)
-  headlines = text.split('\n')
+  headlines = text.splitlines()
   headlines = list(filter(None, headlines))
   headlines = list(set(headlines))
   for i, h in enumerate(headlines):
