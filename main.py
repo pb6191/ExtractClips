@@ -37,6 +37,7 @@ def my_link():
   url = "https://metatags.io/"
   driver.get(url)
   WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, "/html/body/section[1]/input")))
+  time.sleep(5)
   driver.execute_script("document.body.style.zoom = '150%'")
   if (os.path.isdir('extractedImgs')):
     shutil.rmtree("extractedImgs")
@@ -48,6 +49,7 @@ def my_link():
       driver.find_element(By.XPATH, "/html/body/section[1]/input").clear()
       driver.find_element(By.XPATH, "/html/body/section[1]/input").send_keys(h)
       WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, "//div[@class = 'card-seo-twitter']")))
+      time.sleep(2)
       im = driver.get_screenshot_as_png()
       im = Image.open(BytesIO(im))
       im1 = im.crop((x/3.71, y/2.2, x/2.105, y/1.444))
