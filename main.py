@@ -15,6 +15,7 @@ import shutil
 from threading import Thread
 
 global text
+global app
 app = Flask(__name__)
 
 class Compute(Thread):
@@ -78,4 +79,5 @@ def my_link():
   return render_template('index.html', message="Processing...")
 
 if __name__ == '__main__':
+  global app
   app.run(debug=True, host='0.0.0.0', port=environ.get("PORT", 5000))
