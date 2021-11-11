@@ -18,10 +18,10 @@ global text
 app = Flask(__name__)
 
 class Compute(Thread):
-  @copy_current_request_context
   def __init__(self, request):
     Thread.__init__(self)
-    self.request = request
+    with app.test_request_context():
+      self.request = request
 
   def run(self):
     global text
