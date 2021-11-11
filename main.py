@@ -18,7 +18,6 @@ global text
 app = Flask(__name__)
 
 class Compute(Thread):
-  @app.route('/my-link/', methods=['POST'])
   def __init__(self, request):
     Thread.__init__(self)
     self.request = request
@@ -61,8 +60,8 @@ class Compute(Thread):
     driver.quit()
     shutil.make_archive("clipsArchive", 'zip', "extractedImgs")
     shutil.rmtree("extractedImgs")
-    return send_file('clipsArchive.zip', as_attachment=True, download_name='clipsArchive.zip'), render_template('index.html', message="Idle.")
-
+    #return send_file('clipsArchive.zip', as_attachment=True, download_name='clipsArchive.zip'), render_template('index.html', message="Idle.")
+    return render_template('index.html', message="Idle.")
     print(self.request)
     print("done")
 
