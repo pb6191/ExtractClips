@@ -78,8 +78,11 @@ def status():
         headlines = list(filter(None, headlines))
         headlines = list(set(headlines))
         filenames = []
+        urls = []
         yield f"Processing {len(headlines)} unique urls<br><br>"
         for i, h in enumerate(headlines, start=1):
+            h = h.strip("/")
+            print(i, h)
             yield f"Processing url {i} of {len(headlines)}: {h}<br>"
             driver.find_element(By.XPATH, "/html/body/section[1]/input").clear()
             driver.find_element(By.XPATH, "/html/body/section[1]/input").send_keys(h)
@@ -94,16 +97,20 @@ def status():
             im1 = im.crop((x / 3.71, y / 2.2, x / 2.105, y / 1.444))
             filename = (h.split("/")[-1]).replace(".html", "") + ".png"
             im1.save("extractedImgs/" + filename, "png")
-            filenames.append(filename)
 
-            yield f"Output filename: {filename}<br><br>"
+            filenames.append(filename)
+            urls.append(h)
+
+            yield f"Output: {filename}<br><br>"
 
             if i == len(headlines):
                 yield "<br>Done. cards.zip is ready for download. See _cards_.csv in the zipped folder for details.<br>"
+            else:
+                time.sleep(1)
 
         write_csv(
             header=["url", "filename"],
-            data=zip(headlines, filenames),
+            data=zip(urls, filenames),
             path=os.path.join("extractedImgs", "_cards_.csv"),
         )
 
