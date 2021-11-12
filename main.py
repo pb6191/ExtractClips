@@ -47,6 +47,7 @@ def write_csv(header, data, path):
 @app.route("/status/", methods=["POST"])
 def status():
     def generate():
+        yield "Initializing...<br>"
         text = request.form["text"]
         # implicit waits and parallelization
         chrome_options = webdriver.ChromeOptions()
@@ -77,7 +78,7 @@ def status():
         headlines = list(filter(None, headlines))
         headlines = list(set(headlines))
         filenames = []
-        yield f"Processing {len(headlines)} unique urls...<br><br>"
+        yield f"Processing {len(headlines)} unique urls<br><br>"
         for i, h in enumerate(headlines, start=1):
             yield f"Processing url {i} of {len(headlines)}: {h}<br>"
             driver.find_element(By.XPATH, "/html/body/section[1]/input").clear()
