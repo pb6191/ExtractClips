@@ -3,6 +3,7 @@ import shutil
 import time
 from io import BytesIO
 from os import environ
+import csv
 
 import PIL
 from flask import (
@@ -28,7 +29,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    return render_template("index.html", message="Idle.")
+    return render_template("index.html", message="")
 
 
 @app.route("/my-link2/", methods=["POST"])
@@ -36,10 +37,17 @@ def my_link2():
     return send_file("cards.zip", as_attachment=True, download_name="cards.zip")
 
 
+def write_csv(header, data, path):
+    with open(path, "w") as f:
+        writer = csv.writer(f)
+        writer.writerow(header)
+        writer.writerows(data)
+
+
 @app.route("/my-link/", methods=["POST"])
 def my_link():
     def generate():
-        yield "Start processing...<br>"
+        yield "Processing...<br><br>"
         text = request.form["text"]
         # implicit waits and parallelization
         chrome_options = webdriver.ChromeOptions()
@@ -65,12 +73,12 @@ def my_link():
         if os.path.isdir("extractedImgs"):
             shutil.rmtree("extractedImgs")
         os.mkdir("extractedImgs", 0o777)
-        print(text)
         headlines = text.splitlines()
         headlines = list(filter(None, headlines))
         headlines = list(set(headlines))
+        filenames = []
         for i, h in enumerate(headlines, start=1):
-            yield f"Processing url {i}: {h}<br>"
+            yield f"Processing url {i} of {len(headlines)}: {h}<br>"
             driver.find_element(By.XPATH, "/html/body/section[1]/input").clear()
             driver.find_element(By.XPATH, "/html/body/section[1]/input").send_keys(h)
             WebDriverWait(driver, 5).until(
@@ -82,10 +90,18 @@ def my_link():
             im = driver.get_screenshot_as_png()
             im = Image.open(BytesIO(im))
             im1 = im.crop((x / 3.71, y / 2.2, x / 2.105, y / 1.444))
-            im1.save(
-                "extractedImgs/" + (h.split("/")[-1]).replace(".html", "") + ".png",
-                "png",
-            )
+            filename = (h.split("/")[-1]).replace(".html", "") + ".png"
+            im1.save("extractedImgs/" + filename, "png")
+            filenames.append(filename)
+
+            if i == len(headlines):
+                yield "<br>Done. cards.zip is ready for download. See _cards_.csv in the zipped folder for details.<br>"
+
+        write_csv(
+            header=["url", "filename"],
+            data=zip(headlines, filenames),
+            path=os.path.join("extractedImgs", "_cards_.csv"),
+        )
 
         driver.quit()
         shutil.make_archive("cards", "zip", "extractedImgs")
