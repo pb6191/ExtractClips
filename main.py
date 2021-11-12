@@ -47,8 +47,13 @@ def write_csv(header, data, path):
 @app.route("/status/", methods=["POST"])
 def status():
     def generate():
-        yield "Initializing...<br>"
+        msg = '<p>If you want to generate cards manually, visit <a href="https://metatags.io/">metatags.io</a> or <a href="https://socialsharepreview.com">socialsharepreview.com</a>.</p>'
         text = request.form["text"]
+        if not text:
+            yield "Please provide URLs." + msg
+            return None
+        yield "Initializing..." + msg
+
         # implicit waits and parallelization
         chrome_options = webdriver.ChromeOptions()
         chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
@@ -104,7 +109,7 @@ def status():
             yield f"Output: {filename}<br><br>"
 
             if i == len(headlines):
-                yield "<br>Done. cards.zip is ready for download. See _cards_.csv in the zipped folder for details.<br>"
+                yield "<br>Done. cards.zip is ready for download. See <strong>_cards_.csv</strong> in the zipped folder for details.<br>"
             else:
                 time.sleep(1)
 
