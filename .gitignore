@@ -2,3 +2,4 @@
 chromedriver
 venv
 .gitignore
+.vscode
