@@ -32,8 +32,8 @@ def index():
     return render_template("index.html", message="")
 
 
-@app.route("/my-link2/", methods=["POST"])
-def my_link2():
+@app.route("/download/", methods=["POST"])
+def download():
     return send_file("cards.zip", as_attachment=True, download_name="cards.zip")
 
 
@@ -44,8 +44,8 @@ def write_csv(header, data, path):
         writer.writerows(data)
 
 
-@app.route("/my-link/", methods=["POST"])
-def my_link():
+@app.route("/status/", methods=["POST"])
+def status():
     def generate():
         yield "Processing...<br><br>"
         text = request.form["text"]
@@ -93,6 +93,8 @@ def my_link():
             filename = (h.split("/")[-1]).replace(".html", "") + ".png"
             im1.save("extractedImgs/" + filename, "png")
             filenames.append(filename)
+
+            yield f"Output filename: {filename}<br><br>"
 
             if i == len(headlines):
                 yield "<br>Done. cards.zip is ready for download. See _cards_.csv in the zipped folder for details.<br>"
