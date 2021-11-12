@@ -81,7 +81,7 @@ def status():
         urls = []
         yield f"Processing {len(headlines)} unique urls<br><br>"
         for i, h in enumerate(headlines, start=1):
-            h = h.strip("/")
+            h = h.strip().strip("/")
             print(i, h)
             yield f"Processing url {i} of {len(headlines)}: {h}<br>"
             driver.find_element(By.XPATH, "/html/body/section[1]/input").clear()
