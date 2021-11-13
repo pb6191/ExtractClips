@@ -75,6 +75,15 @@ def status():
         )
         time.sleep(5)
         driver.execute_script("document.body.style.zoom = '150%'")
+        driver.execute_script(
+            """
+            const fbElement = document.querySelector("div.card-seo-facebook");
+            const ipElement = document.querySelector("input.nav-search__input.js-search.is-active");
+            document.body.innerHTML = "";
+            document.body.appendChild(fbElement);
+            document.body.appendChild(ipElement);
+            """
+            )
         if os.path.isdir("extractedImgs"):
             shutil.rmtree("extractedImgs")
         os.mkdir("extractedImgs", 0o777)
@@ -95,13 +104,6 @@ def status():
                 EC.element_to_be_clickable(
                     (By.XPATH, "//div[@class = 'card-seo-facebook']")
                 )
-            )
-            driver.execute_script(
-            """
-            const fbElement = document.querySelector("div.card-seo-facebook");
-            document.body.innerHTML = "";
-            document.body.appendChild(fbElement);
-            """
             )
             time.sleep(2)
             im = driver.get_screenshot_as_png()
