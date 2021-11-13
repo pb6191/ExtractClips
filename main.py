@@ -71,14 +71,14 @@ def status():
         url = "https://metatags.io/"
         driver.get(url)
         WebDriverWait(driver, 5).until(
-            EC.element_to_be_clickable((By.XPATH, "/html/body/section[1]/input"))
+            EC.element_to_be_clickable((By.XPATH, "//input[contains(@class, 'search')]"))
         )
         time.sleep(5)
         driver.execute_script("document.body.style.zoom = '150%'")
         driver.execute_script(
             """
-            const fbElement = document.querySelector("div.card-seo-facebook");
-            const ipElement = document.querySelector("input.nav-search__input.js-search.is-active");
+            const fbElement = document.querySelector("div.card-seo-facebook").css({ style: "border-radius:5.99998px" });
+            const ipElement = document.querySelector("nav.nav");
             document.body.innerHTML = "";
             document.body.appendChild(fbElement);
             document.body.appendChild(ipElement);
@@ -98,8 +98,8 @@ def status():
             h = h.strip().strip("/")
             print(i, h)
             yield f"Processing url {i} of {len(headlines)}: {h}<br>"
-            driver.find_element(By.XPATH, "/html/body/section[1]/input").clear()
-            driver.find_element(By.XPATH, "/html/body/section[1]/input").send_keys(h)
+            driver.find_element(By.XPATH, "//input[contains(@class, 'search')]").clear()
+            driver.find_element(By.XPATH, "//input[contains(@class, 'search')]").send_keys(h)
             WebDriverWait(driver, 5).until(
                 EC.element_to_be_clickable(
                     (By.XPATH, "//div[@class = 'card-seo-facebook']")
