@@ -54,7 +54,7 @@ def write_csv(header, data, path, mode):
 @app.route("/status/", methods=["POST"])
 def status():
     def generate():
-        msg = "<p>If you want to generate cards manually, visit <a href='https://metatags.io/' target='_blank'>metatags.io</a> or <a href='https://socialsharepreview.com' target='_blank'>socialsharepreview.com</a>.</p><p>A download button will appear at the bottom of the page when all URLs have been processed. But in case you need to download the cards at any point during processing, click <a href='/manual_download/'>here</a>.</p>"
+        msg = "<p>If you want to generate cards manually, visit <a href='https://metatags.io/' target='_blank'>metatags.io</a> or <a href='https://socialsharepreview.com' target='_blank'>socialsharepreview.com</a>.</p><p>A download button will appear at the bottom of the page when all URLs have been processed. But if you want to terminate the app and download the URLs/cards that have already been processed, click <a href='/manual_download/'>here</a>.</p>"
         text = request.form["text"]
         if not text:
             yield "Please provide URLs." + msg
