@@ -122,7 +122,8 @@ def status():
             title = title.replace(" ", "-")[:100].lower()
 
             if len(title) < 3:  # in case there are problems with the title text
-                filename = (h.split("/")[-1]).replace(".html", "") + ".png"
+                name = (h.split("?")[0].split("/")[-1]).replace(".html", "")
+                filename = name + ".png"
             else:
                 filename = title + ".png"
             im1.save("extractedImgs/" + filename, "png")
