@@ -109,7 +109,7 @@ def status():
             time.sleep(2)
             im = driver.get_screenshot_as_png()
             im = Image.open(BytesIO(im))
-            im1 = im.crop((0,0,x/5.125,x/7.542))
+            im1 = im.crop((0,0,x/5.12,x/7.537))
             #im1 = im.crop((x / 3.71, y / 2.2, x / 2.105, y / 1.444))
             im1 = ImageOps.expand(im1, border=5, fill=(255,255,255))
             filename = (h.split("/")[-1]).replace(".html", "") + ".png"
