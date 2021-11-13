@@ -98,7 +98,7 @@ def status():
             )
             driver.execute_script(
             """
-            const fbElement = document.getElement(By.XPATH, "card-seo-facebook");
+            const fbElement = document.querySelector("div.card-seo-facebook");
             document.body.innerHTML = "";
             document.body.appendChild(fbElement);
             """
