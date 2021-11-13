@@ -79,7 +79,7 @@ def status():
             """
             const fbElement = document.querySelector("div.card-seo-facebook");
             fbElement.style = "border-radius:5.99998px";
-            const ipElement = document.querySelector("nav.nav");
+            const ipElement = document.querySelector("section.nav-search");
             document.body.innerHTML = "";
             document.body.appendChild(fbElement);
             document.body.appendChild(ipElement);
