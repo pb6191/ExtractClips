@@ -33,17 +33,28 @@ def download():
     return send_file("cards.zip", as_attachment=True, download_name="cards.zip")
 
 
-def write_csv(header, data, path):
-    with open(path, "w") as f:
+@app.route("/manual_download/", methods=["GET"])
+def manual_download():
+    if os.path.isdir("extractedImgs"):
+        shutil.make_archive("cards", "zip", "extractedImgs")
+    if os.path.exists("cards.zip"):
+        return send_file("cards.zip", as_attachment=True, download_name="cards.zip")
+    else:
+        return "Whoops, something went wrong."
+
+
+def write_csv(header, data, path, mode):
+    with open(path, mode) as f:
         writer = csv.writer(f)
-        writer.writerow(header)
+        if mode == "w":
+            writer.writerow(header)
         writer.writerows(data)
 
 
 @app.route("/status/", methods=["POST"])
 def status():
     def generate():
-        msg = '<p>If you want to generate cards manually, visit <a href="https://metatags.io/">metatags.io</a> or <a href="https://socialsharepreview.com">socialsharepreview.com</a>.</p>'
+        msg = "<p>If you want to generate cards manually, visit <a href='https://metatags.io/' target='_blank'>metatags.io</a> or <a href='https://socialsharepreview.com' target='_blank'>socialsharepreview.com</a>.</p><p>A download button will appear at the bottom of the page when all URLs have been processed. But in case you need to download the cards at any point during processing, click <a href='/manual_download/'>here</a>.</p>"
         text = request.form["text"]
         if not text:
             yield "Please provide URLs." + msg
@@ -85,13 +96,13 @@ def status():
         )
         if os.path.isdir("extractedImgs"):
             shutil.rmtree("extractedImgs")
+        if os.path.exists("cards.zip"):
+            os.remove("cards.zip")
         os.mkdir("extractedImgs", 0o777)
 
         headlines = text.splitlines()
         headlines = list(filter(None, headlines))
         headlines = list(set(headlines))
-        filenames = []
-        urls = []
         yield f"Processing {len(headlines)} unique urls<br><br>"
         for i, h in enumerate(headlines, start=1):
             h = h.strip().strip("/")
@@ -128,9 +139,6 @@ def status():
                 filename = title + ".png"
             im1.save("extractedImgs/" + filename, "png")
 
-            filenames.append(filename)
-            urls.append(h)
-
             yield f"Output: {filename}<br><br>"
 
             if i == len(headlines):
@@ -138,11 +146,13 @@ def status():
             else:
                 time.sleep(1)
 
-        write_csv(
-            header=["url", "filename"],
-            data=zip(urls, filenames),
-            path=os.path.join("extractedImgs", "_cards_.csv"),
-        )
+            mode = "w" if i == 1 else "a"
+            write_csv(
+                header=["url", "filename"],
+                data=zip([h], [filename]),
+                path=os.path.join("extractedImgs", "_cards_.csv"),
+                mode=mode,
+            )
 
         driver.quit()
         shutil.make_archive("cards", "zip", "extractedImgs")
