@@ -16,7 +16,7 @@ from flask import (
     send_file,
     stream_with_context,
 )
-from PIL import Image
+from PIL import Image, ImageOps
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
@@ -109,8 +109,9 @@ def status():
             time.sleep(2)
             im = driver.get_screenshot_as_png()
             im = Image.open(BytesIO(im))
-            im1=im
+            im1 = im.crop((0,0,x/5.127,x/7.544))
             #im1 = im.crop((x / 3.71, y / 2.2, x / 2.105, y / 1.444))
+            im1 = ImageOps.expand(im1, border=5, fill=(1,1,1))
             filename = (h.split("/")[-1]).replace(".html", "") + ".png"
             im1.save("extractedImgs/" + filename, "png")
 
