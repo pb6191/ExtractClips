@@ -4,6 +4,7 @@ import time
 from io import BytesIO
 from os import environ
 import csv
+import re
 
 from flask import (
     Flask,
@@ -106,11 +107,24 @@ def status():
                 )
             )
             time.sleep(2)
+
             im = driver.get_screenshot_as_png()
             im = Image.open(BytesIO(im))
             im1 = im.crop((0, 0, x / 5.12, x / 7.524))
             im1 = ImageOps.expand(im1, border=5, fill=(255, 255, 255))
-            filename = (h.split("/")[-1]).replace(".html", "") + ".png"
+
+            # get image title name
+            title = driver.find_element(
+                By.XPATH, "/html/body/div/div[2]/div/div/div"
+            ).text
+            title = re.sub(r"\W+", " ", title)
+            title = re.sub(r" \w ", " ", title).strip()
+            title = title.replace(" ", "-")[:100].lower()
+
+            if len(title) < 3:  # in case there are problems with the title text
+                filename = (h.split("/")[-1]).replace(".html", "") + ".png"
+            else:
+                filename = title + ".png"
             im1.save("extractedImgs/" + filename, "png")
 
             filenames.append(filename)
