@@ -5,12 +5,9 @@ from io import BytesIO
 from os import environ
 import csv
 
-import PIL
 from flask import (
     Flask,
     Response,
-    flash,
-    redirect,
     render_template,
     request,
     send_file,
@@ -18,8 +15,6 @@ from flask import (
 )
 from PIL import Image, ImageOps
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -71,7 +66,9 @@ def status():
         url = "https://metatags.io/"
         driver.get(url)
         WebDriverWait(driver, 5).until(
-            EC.element_to_be_clickable((By.XPATH, "//input[contains(@class, 'search')]"))
+            EC.element_to_be_clickable(
+                (By.XPATH, "//input[contains(@class, 'search')]")
+            )
         )
         time.sleep(5)
         driver.execute_script("document.body.style.zoom = '150%'")
@@ -84,7 +81,7 @@ def status():
             document.body.appendChild(fbElement);
             document.body.appendChild(ipElement);
             """
-            )
+        )
         if os.path.isdir("extractedImgs"):
             shutil.rmtree("extractedImgs")
         os.mkdir("extractedImgs", 0o777)
@@ -100,7 +97,9 @@ def status():
             print(i, h)
             yield f"Processing url {i} of {len(headlines)}: {h}<br>"
             driver.find_element(By.XPATH, "//input[contains(@class, 'search')]").clear()
-            driver.find_element(By.XPATH, "//input[contains(@class, 'search')]").send_keys(h)
+            driver.find_element(
+                By.XPATH, "//input[contains(@class, 'search')]"
+            ).send_keys(h)
             WebDriverWait(driver, 5).until(
                 EC.element_to_be_clickable(
                     (By.XPATH, "//div[@class = 'card-seo-facebook']")
@@ -109,9 +108,8 @@ def status():
             time.sleep(2)
             im = driver.get_screenshot_as_png()
             im = Image.open(BytesIO(im))
-            im1 = im.crop((0,0,x/5.12,x/7.524))
-            #im1 = im.crop((x / 3.71, y / 2.2, x / 2.105, y / 1.444))
-            im1 = ImageOps.expand(im1, border=5, fill=(255,255,255))
+            im1 = im.crop((0, 0, x / 5.12, x / 7.524))
+            im1 = ImageOps.expand(im1, border=5, fill=(255, 255, 255))
             filename = (h.split("/")[-1]).replace(".html", "") + ".png"
             im1.save("extractedImgs/" + filename, "png")
 
@@ -135,7 +133,6 @@ def status():
         shutil.make_archive("cards", "zip", "extractedImgs")
         shutil.rmtree("extractedImgs")
         yield render_template("index2.html")
-        # return send_file('cards.zip', as_attachment=True, download_name='cards.zip')
 
     return Response(stream_with_context(generate()))
 
