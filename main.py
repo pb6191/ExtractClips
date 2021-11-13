@@ -77,7 +77,8 @@ def status():
         driver.execute_script("document.body.style.zoom = '150%'")
         driver.execute_script(
             """
-            const fbElement = document.querySelector("div.card-seo-facebook").css({ style: "border-radius:5.99998px" });
+            const fbElement = document.querySelector("div.card-seo-facebook");
+            fbElement.style.border-radius = '5.99998px';
             const ipElement = document.querySelector("nav.nav");
             document.body.innerHTML = "";
             document.body.appendChild(fbElement);
