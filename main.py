@@ -93,13 +93,21 @@ def status():
             driver.find_element(By.XPATH, "/html/body/section[1]/input").send_keys(h)
             WebDriverWait(driver, 5).until(
                 EC.element_to_be_clickable(
-                    (By.XPATH, "//div[@class = 'card-seo-twitter']")
+                    (By.XPATH, "//div[@class = 'card-seo-facebook']")
                 )
+            )
+            driver.execute_script(
+            """
+            const fbElement = document.getElement(By.XPATH, "card-seo-facebook");
+            document.body.innerHTML = "";
+            document.body.appendChild(fbElement);
+            """
             )
             time.sleep(2)
             im = driver.get_screenshot_as_png()
             im = Image.open(BytesIO(im))
-            im1 = im.crop((x / 3.71, y / 2.2, x / 2.105, y / 1.444))
+            im1=im
+            #im1 = im.crop((x / 3.71, y / 2.2, x / 2.105, y / 1.444))
             filename = (h.split("/")[-1]).replace(".html", "") + ".png"
             im1.save("extractedImgs/" + filename, "png")
 
