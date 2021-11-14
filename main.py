@@ -123,7 +123,7 @@ def status():
                     (By.XPATH, "//div[@class = 'card-seo-facebook']")
                 )
             )
-            time.sleep(3)
+            time.sleep(10)
 
             im = driver.get_screenshot_as_png()
             im = Image.open(BytesIO(im))
