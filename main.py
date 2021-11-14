@@ -114,6 +114,9 @@ def status():
             driver.find_element(
                 By.XPATH, "//input[contains(@class, 'search')]"
             ).send_keys(h)
+            driver.find_element(
+                By.XPATH, "//input[contains(@class, 'search')]"
+            ).send_keys(Keys.RETURN)
             WebDriverWait(driver, 5).until(
                 EC.element_to_be_clickable(
                     (By.XPATH, "//div[@class = 'card-seo-facebook']")
