@@ -31,6 +31,7 @@ def index():
 
 @app.route("/download/", methods=["POST"])
 def download():
+    os.remove("processing.txt")
     return send_file("cards.zip", as_attachment=True, download_name="cards.zip")
 
 
@@ -42,6 +43,17 @@ def manual_download():
         return send_file("cards.zip", as_attachment=True, download_name="cards.zip")
     else:
         return "Whoops, something went wrong."
+
+
+@app.route("/reset/", methods=["GET"])
+def reset():
+    if os.path.isdir("extractedImgs"):
+        shutil.rmtree("extractedImgs")
+    if os.path.exists("cards.zip"):
+        os.remove("cards.zip")
+    if os.path.exists("processing.txt"):
+        os.remove("processing.txt")
+    return "App has been reset."
 
 
 def write_csv(header, data, path, mode):
@@ -60,7 +72,14 @@ def status():
         if not text:
             yield "Please provide URLs." + msg
             return None
+        if os.path.exists("processing.txt"):
+            yield "Someone else might be using the app right now. Try again later."
+            return None
+
         yield "Initializing..." + msg
+
+        with open("processing.txt", "w") as f:
+            f.write("App is running...")
 
         # implicit waits and parallelization
         chrome_options = webdriver.ChromeOptions()
@@ -97,6 +116,7 @@ def status():
             document.body.appendChild(ipElement);
             """
         )
+
         if os.path.isdir("extractedImgs"):
             shutil.rmtree("extractedImgs")
         if os.path.exists("cards.zip"):
