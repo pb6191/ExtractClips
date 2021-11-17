@@ -132,7 +132,7 @@ def status():
         yield f"Processing {len(headlines)} unique urls<br><br>"
         for i, h in enumerate(headlines, start=1):
             req = Request(h, headers={'User-Agent': 'Mozilla/5.0'})
-            webpage = urlopen(req).read()
+            webpage = urlopen(req, timeout=10).read()
             soup = BeautifulSoup(webpage, "lxml")
             title = soup.find("meta", property="og:title")
             url = soup.find("meta", property="og:url")
