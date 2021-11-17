@@ -226,6 +226,7 @@ def status():
             process = os.popen('Meta Tags — Preview, Edit and Generate.html')
             rawContent = process.read()
             process.close()
+            print(rawContent)
             rawContent = rawContent.replace("REPLACE_TITLE", metadata['title'])
             rawContent = rawContent.replace("REPLACE_DESC", metadata['description'])
             rawContent = rawContent.replace("REPLACE_SITE", metadata['sitename'])
