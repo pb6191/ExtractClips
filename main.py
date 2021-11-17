@@ -220,9 +220,9 @@ def status():
                 'color': get_theme_color(soup),
                 'url': h
                 }
-            print(metadata.title)
-            print(metadata.description)
-            print(metadata.sitename)
+            print(metadata['title'])
+            print(metadata['description'])
+            print(metadata['sitename'])
             h = h.strip().strip("/")
             print(i, h)
             yield f"Processing url {i} of {len(headlines)}: {h}<br>"
