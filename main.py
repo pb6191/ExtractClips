@@ -74,7 +74,7 @@ def get_site_name(html, url):
     else:
         site_name = url.split('//')[1]
         return site_name.split('/')[0].rsplit('.')[1].capitalize()
-    return sitename
+    return site_name
 
 
 def get_favicon(html, url):
@@ -94,7 +94,7 @@ def get_theme_color(html):
         color = html.find("meta", property="theme-color").get('content')
         return color
     return None
-    
+
 app = Flask(__name__)
 
 
