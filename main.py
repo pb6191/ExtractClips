@@ -20,6 +20,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from urllib import urlopen
+from bs4 import BeautifulSoup
 
 app = Flask(__name__)
 
@@ -128,6 +130,14 @@ def status():
         headlines = list(set(headlines))
         yield f"Processing {len(headlines)} unique urls<br><br>"
         for i, h in enumerate(headlines, start=1):
+            webpage = urlopen(h).read()
+            soup = BeautifulSoup(webpage, "lxml")
+            title = soup.find("meta", property="og:title")
+            url = soup.find("meta", property="og:url")
+            description = soup.find("meta", property="og:description")
+            print(title["content"] if title else "No meta title given")
+            print(url["content"] if url else "No meta url given")
+            print(description["content"] if description else "No meta description given")
             h = h.strip().strip("/")
             print(i, h)
             yield f"Processing url {i} of {len(headlines)}: {h}<br>"
