@@ -137,7 +137,7 @@ def status():
                 'Accept-Encoding': 'none',
                 'Accept-Language': 'en-US,en;q=0.8',
                 'Connection': 'keep-alive'}
-            req = Request(h, headers=hdr)
+            req = urllib.Request(h, headers=hdr)
             webpage = urlopen(req, timeout=10).read()
             soup = BeautifulSoup(webpage, "lxml")
             title = soup.find("meta", property="og:title")
