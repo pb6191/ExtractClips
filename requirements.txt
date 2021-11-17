@@ -3,4 +3,4 @@ selenium
 seleniumbase
 flask
 pillow
-lxml
+requests

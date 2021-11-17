@@ -5,7 +5,6 @@ from io import BytesIO
 from os import environ
 import csv
 import re
-import lxml
 
 from flask import (
     Flask,
@@ -21,8 +20,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup
+import requests
 
 app = Flask(__name__)
 
@@ -131,21 +130,27 @@ def status():
         headlines = list(set(headlines))
         yield f"Processing {len(headlines)} unique urls<br><br>"
         for i, h in enumerate(headlines, start=1):
-            hdr = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-                'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.3',
-                'Accept-Encoding': 'none',
-                'Accept-Language': 'en-US,en;q=0.8',
-                'Connection': 'keep-alive'}
-            req = urllib.Request(h, headers=hdr)
-            webpage = urlopen(req, timeout=10).read()
-            soup = BeautifulSoup(webpage, "lxml")
-            title = soup.find("meta", property="og:title")
-            url = soup.find("meta", property="og:url")
-            description = soup.find("meta", property="og:description")
-            print(title["content"] if title else "No meta title given")
-            print(url["content"] if url else "No meta url given")
-            print(description["content"] if description else "No meta description given")
+            headers = {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET',
+                'Access-Control-Allow-Headers': 'Content-Type',
+                'Access-Control-Max-Age': '3600',
+                'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'
+                }
+            req = requests.get(h, headers)
+            soup = BeautifulSoup(req.content, 'html.parser')
+            metadata = {
+                'title': get_title(soup),
+                'description': get_description(soup),
+                'image': get_image(soup),
+                'favicon': get_favicon(soup, h),
+                'sitename': get_site_name(soup, h),
+                'color': get_theme_color(soup),
+                'url': h
+                }
+            print(metadata.title)
+            print(metadata.description)
+            print(metadata.sitename)
             h = h.strip().strip("/")
             print(i, h)
             yield f"Processing url {i} of {len(headlines)}: {h}<br>"
@@ -208,3 +213,76 @@ def status():
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=environ.get("PORT", 5000))
+
+
+def get_title(html):
+    """Scrape page title."""
+    title = None
+    if html.title.string:
+        title = html.title.string
+    elif html.find("meta", property="og:title"):
+        title = html.find("meta", property="og:title").get('content')
+    elif html.find("meta", property="twitter:title"):
+        title = html.find("meta", property="twitter:title").get('content')
+    elif html.find("h1"):
+        title = html.find("h1").string
+    return title
+
+
+def get_description(html):
+    """Scrape page description."""
+    description = None
+    if html.find("meta", property="description"):
+        description = html.find("meta", property="description").get('content')
+    elif html.find("meta", property="og:description"):
+        description = html.find("meta", property="og:description").get('content')
+    elif html.find("meta", property="twitter:description"):
+        description = html.find("meta", property="twitter:description").get('content')
+    elif html.find("p"):
+        description = html.find("p").contents
+    return description
+
+
+def get_image(html):
+    """Scrape share image."""
+    image = None
+    if html.find("meta", property="image"):
+        image = html.find("meta", property="image").get('content')
+    elif html.find("meta", property="og:image"):
+        image = html.find("meta", property="og:image").get('content')
+    elif html.find("meta", property="twitter:image"):
+        image = html.find("meta", property="twitter:image").get('content')
+    elif html.find("img", src=True):
+        image = html.find_all("img").get('src')
+    return image
+
+
+def get_site_name(html, url):
+    """Scrape site name."""
+    if html.find("meta", property="og:site_name"):
+        site_name = html.find("meta", property="og:site_name").get('content')
+    elif html.find("meta", property='twitter:title'):
+        site_name = html.find("meta", property="twitter:title").get('content')
+    else:
+        site_name = url.split('//')[1]
+        return site_name.split('/')[0].rsplit('.')[1].capitalize()
+    return sitename
+
+
+def get_favicon(html, url):
+    """Scrape favicon."""
+    if html.find("link", attrs={"rel": "icon"}):
+        favicon = html.find("link", attrs={"rel": "icon"}).get('href')
+    elif html.find("link", attrs={"rel": "shortcut icon"}):
+        favicon = html.find("link", attrs={"rel": "shortcut icon"}).get('href')
+    else:
+        favicon = f'{url.rstrip("/")}/favicon.ico'
+    return favicon
+
+
+def get_theme_color(html):
+    """Scrape brand color."""
+    if html.find("meta", property="theme-color"):
+        color = html.find("meta", property="theme-color").get('content')
+        return color
+    return None
