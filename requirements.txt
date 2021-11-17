@@ -3,3 +3,4 @@ selenium
 seleniumbase
 flask
 pillow
+lxml.html

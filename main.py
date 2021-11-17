@@ -5,6 +5,7 @@ from io import BytesIO
 from os import environ
 import csv
 import re
+import lxml.html
 
 from flask import (
     Flask,
@@ -22,7 +23,6 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
-import lxml
 
 app = Flask(__name__)
 
@@ -132,7 +132,7 @@ def status():
         yield f"Processing {len(headlines)} unique urls<br><br>"
         for i, h in enumerate(headlines, start=1):
             webpage = urlopen(h).read()
-            soup = BeautifulSoup(webpage, "lxml")
+            soup = BeautifulSoup(webpage, "lxml.html")
             title = soup.find("meta", property="og:title")
             url = soup.find("meta", property="og:url")
             description = soup.find("meta", property="og:description")
