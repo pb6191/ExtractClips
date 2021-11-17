@@ -22,6 +22,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
+import lxml
 
 app = Flask(__name__)
 
