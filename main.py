@@ -250,7 +250,6 @@ def status():
             outF2.write(htmlContent2)
             outF2.close()
             driver.get('file:///'+os.getcwd() + '//blank.html')
-            print(htmlContent2)
             time.sleep(5)
             driver.execute_script("document.body.style.zoom = '150%'")
             h = h.strip().strip("/")
@@ -259,8 +258,7 @@ def status():
             
             im = driver.get_screenshot_as_png()
             im = Image.open(BytesIO(im))
-            im1 = im
-            #im1 = im.crop((0, 0, x / 5.12, x / 7.524))
+            im1 = im.crop((0, 0, x / 4.7, x / 6.75))
             #im1 = ImageOps.expand(im1, border=5, fill=(255, 255, 255))
 
             # get image title name
