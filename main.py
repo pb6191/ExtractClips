@@ -26,10 +26,10 @@ import requests
 def get_title(html):
     """Scrape page title."""
     title = "None"
-    if html.title.string:
-        title = html.title.string
-    elif html.find("meta", property="og:title"):
+    if html.find("meta", property="og:title"):
         title = html.find("meta", property="og:title").get('content')
+    elif html.title.string:
+        title = html.title.string
     elif html.find("meta", property="twitter:title"):
         title = html.find("meta", property="twitter:title").get('content')
     elif html.find("h1"):
@@ -40,10 +40,10 @@ def get_title(html):
 def get_description(html):
     """Scrape page description."""
     description = "None"
-    if html.find("meta", property="description"):
-        description = html.find("meta", property="description").get('content')
-    elif html.find("meta", property="og:description"):
+    if html.find("meta", property="og:description"):
         description = html.find("meta", property="og:description").get('content')
+    elif html.find("meta", property="description"):
+        description = html.find("meta", property="description").get('content')
     elif html.find("meta", property="twitter:description"):
         description = html.find("meta", property="twitter:description").get('content')
     elif html.find("p"):
@@ -54,10 +54,10 @@ def get_description(html):
 def get_image(html):
     """Scrape share image."""
     image = "None"
-    if html.find("meta", property="image"):
-        image = html.find("meta", property="image").get('content')
-    elif html.find("meta", property="og:image"):
+    if html.find("meta", property="og:image"):
         image = html.find("meta", property="og:image").get('content')
+    elif html.find("meta", property="image"):
+        image = html.find("meta", property="image").get('content')
     elif html.find("meta", property="twitter:image"):
         image = html.find("meta", property="twitter:image").get('content')
     elif html.find("img", src=True):
