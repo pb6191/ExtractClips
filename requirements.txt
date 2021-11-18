@@ -4,3 +4,4 @@ seleniumbase
 flask
 pillow
 requests
+urlexpander
