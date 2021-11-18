@@ -249,7 +249,7 @@ def status():
             outF2 = open("blank.html", "w")
             outF2.write(htmlContent2)
             outF2.close()
-            driver.get('file://blank.html')
+            driver.get('file:///blank.html')
             time.sleep(5)
             driver.execute_script("document.body.style.zoom = '150%'")
             h = h.strip().strip("/")
