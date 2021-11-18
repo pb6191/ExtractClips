@@ -206,25 +206,6 @@ def status():
         
         driver.set_window_size(x, y)
         driver.delete_all_cookies()
-        url = "https://metatags.io/"
-        driver.get(url)
-        WebDriverWait(driver, 5).until(
-            EC.element_to_be_clickable(
-                (By.XPATH, "//input[contains(@class, 'search')]")
-            )
-        )
-        time.sleep(5)
-        driver.execute_script("document.body.style.zoom = '150%'")
-        driver.execute_script(
-            """
-            const fbElement = document.querySelector("div.card-seo-facebook");
-            fbElement.style = "border-radius:5.99998px";
-            const ipElement = document.querySelector("section.nav-search");
-            document.body.innerHTML = "";
-            document.body.appendChild(fbElement);
-            document.body.appendChild(ipElement);
-            """
-        )
 
         if os.path.isdir("extractedImgs"):
             shutil.rmtree("extractedImgs")
@@ -269,32 +250,19 @@ def status():
             outF2.write(htmlContent2)
             outF2.close()
             driver.get('file://blank.html')
+            time.sleep(5)
+            driver.execute_script("document.body.style.zoom = '150%'")
             h = h.strip().strip("/")
             print(i, h)
             yield f"Processing url {i} of {len(headlines)}: {h}<br>"
-            driver.find_element(By.XPATH, "//input[contains(@class, 'search')]").clear()
-            driver.find_element(
-                By.XPATH, "//input[contains(@class, 'search')]"
-            ).send_keys(h)
-            driver.find_element(
-                By.XPATH, "//input[contains(@class, 'search')]"
-            ).send_keys(Keys.RETURN)
-            WebDriverWait(driver, 5).until(
-                EC.element_to_be_clickable(
-                    (By.XPATH, "//div[@class = 'card-seo-facebook']")
-                )
-            )
-            time.sleep(10)
-
+            
             im = driver.get_screenshot_as_png()
             im = Image.open(BytesIO(im))
             im1 = im.crop((0, 0, x / 5.12, x / 7.524))
             im1 = ImageOps.expand(im1, border=5, fill=(255, 255, 255))
 
             # get image title name
-            title = driver.find_element(
-                By.XPATH, "/html/body/div/div[2]/div/div/div"
-            ).text
+            title = metadata['title']
             title = re.sub(r"\W+", " ", title)
             title = re.sub(r" \w ", " ", title).strip()
             title = title.replace(" ", "-")[:100].lower()
