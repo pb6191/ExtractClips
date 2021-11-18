@@ -259,7 +259,10 @@ def status():
             print(metadata['description'])
             print(metadata['sitename'])
             htmlContent2 = htmlContent.replace("REPLACE_TITLE", metadata['title'])
-            htmlContent2 = htmlContent2.replace("REPLACE_DESC", metadata['description'])
+            if isinstance(metadata['description'], list):
+                htmlContent2 = htmlContent2.replace("REPLACE_DESC", metadata['description'][0])
+            else:
+                htmlContent2 = htmlContent2.replace("REPLACE_DESC", metadata['description'])
             htmlContent2 = htmlContent2.replace("REPLACE_SITE", metadata['sitename'])
             htmlContent2 = htmlContent2.replace("REPLACE_IMAGE", metadata['image'])
             outF2 = open("blank.html", "w")
