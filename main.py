@@ -22,10 +22,12 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from bs4 import BeautifulSoup
 import requests
+from htmlwebshot import WebShot
+shot = WebShot()
 
 def get_title(html):
     """Scrape page title."""
-    title = None
+    title = "None"
     if html.title.string:
         title = html.title.string
     elif html.find("meta", property="og:title"):
@@ -39,7 +41,7 @@ def get_title(html):
 
 def get_description(html):
     """Scrape page description."""
-    description = None
+    description = "None"
     if html.find("meta", property="description"):
         description = html.find("meta", property="description").get('content')
     elif html.find("meta", property="og:description"):
@@ -53,7 +55,7 @@ def get_description(html):
 
 def get_image(html):
     """Scrape share image."""
-    image = None
+    image = "None"
     if html.find("meta", property="image"):
         image = html.find("meta", property="image").get('content')
     elif html.find("meta", property="og:image"):
@@ -93,7 +95,7 @@ def get_theme_color(html):
     if html.find("meta", property="theme-color"):
         color = html.find("meta", property="theme-color").get('content')
         return color
-    return None
+    return "None"
 
 app = Flask(__name__)
 
@@ -305,6 +307,7 @@ def status():
                 filename = title + ".png"
             im1.save("extractedImgs/" + filename, "png")
 
+            shot.create_pic(html="blank.html", output="extractedImgs/" + filename)
             yield f"Output: {filename}<br><br>"
 
             if i == len(headlines):
