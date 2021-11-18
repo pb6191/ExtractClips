@@ -227,15 +227,26 @@ def status():
                 }
             req = requests.get(h, headers)
             soup = BeautifulSoup(req.content, 'html.parser')
-            metadata = {
-                'title': get_title(soup),
-                'description': get_description(soup),
-                'image': get_image(soup),
-                'favicon': get_favicon(soup, h),
-                'sitename': get_site_name(soup, h),
-                'color': get_theme_color(soup),
-                'url': h
-                }
+            try:
+                metadata = {
+                    'title': get_title(soup),
+                    'description': get_description(soup),
+                    'image': get_image(soup),
+                    'favicon': get_favicon(soup, h),
+                    'sitename': get_site_name(soup, h),
+                    'color': get_theme_color(soup),
+                    'url': h
+                    }
+            except:
+                metadata = {
+                    'title': "EXCEPTION",
+                    'description': "EXCEPTION",
+                    'image': "EXCEPTION",
+                    'favicon': "EXCEPTION",
+                    'sitename': "EXCEPTION",
+                    'color': "EXCEPTION",
+                    'url': h
+                    }
             print(metadata['title'])
             print(metadata['description'])
             print(metadata['sitename'])
