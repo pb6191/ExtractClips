@@ -218,6 +218,8 @@ def status():
         headlines = list(set(headlines))
         yield f"Processing {len(headlines)} unique urls<br><br>"
         for i, h in enumerate(headlines, start=1):
+            substitute_h = h.split(",")[-1]
+            h = h.split(",")[0]
             headers = {
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Methods': 'GET',
