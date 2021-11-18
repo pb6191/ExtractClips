@@ -22,6 +22,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from bs4 import BeautifulSoup
 import requests
+import pdfkit
 from htmlwebshot import WebShot
 shot = WebShot()
 
