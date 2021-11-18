@@ -4,5 +4,3 @@ seleniumbase
 flask
 pillow
 requests
-htmlwebshot
-pdfkit

@@ -22,9 +22,6 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from bs4 import BeautifulSoup
 import requests
-import pdfkit
-from htmlwebshot import WebShot
-shot = WebShot()
 
 def get_title(html):
     """Scrape page title."""
@@ -270,7 +267,8 @@ def status():
             htmlContent2 = htmlContent2.replace("REPLACE_IMAGE", metadata['image'])
             outF2 = open("blank.html", "w")
             outF2.write(htmlContent2)
-            outF2.close() 
+            outF2.close()
+            driver.get('file://blank.html')
             h = h.strip().strip("/")
             print(i, h)
             yield f"Processing url {i} of {len(headlines)}: {h}<br>"
@@ -308,7 +306,6 @@ def status():
                 filename = title + ".png"
             im1.save("extractedImgs/" + filename, "png")
 
-            shot.create_pic(html="blank.html", output="extractedImgs/" + filename)
             yield f"Output: {filename}<br><br>"
 
             if i == len(headlines):
