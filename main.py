@@ -294,8 +294,8 @@ def status():
 
             mode = "w" if i == 1 else "a"
             write_csv(
-                header=["url", "filename"],
-                data=zip([h], [filename]),
+                header=["url", "filename", "headline"],
+                data=zip([h], [filename], [metadata['title']]),
                 path=os.path.join("extractedImgs", "_cards_.csv"),
                 mode=mode,
             )
