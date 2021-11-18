@@ -261,7 +261,7 @@ def status():
             outF2.write(htmlContent2)
             outF2.close()
             driver.get('file:///'+os.getcwd() + '//blank.html')
-            time.sleep(5)
+            time.sleep(0)
             driver.execute_script("document.body.style.zoom = '150%'")
             h = h.strip().strip("/")
             print(i, h)
