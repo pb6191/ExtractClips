@@ -245,8 +245,9 @@ def status():
                 }
             req = requests.get(h, headers)
             print(req.status_code)
-            soup = BeautifulSoup(req.content, 'html.parser')
-            if req.status_code != 200:
+            if req.status_code == 200:
+                soup = BeautifulSoup(req.content, 'html.parser')
+            else:
                 driver.get(h)
                 for p1 in range(10):
                     time.sleep(1)
