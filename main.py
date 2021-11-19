@@ -22,6 +22,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from bs4 import BeautifulSoup
 import requests
+import random
 
 def get_title(html):
     """Scrape page title."""
@@ -216,6 +217,7 @@ def status():
         headlines = text.splitlines()
         headlines = list(filter(None, headlines))
         headlines = list(set(headlines))
+        random.shuffle(headlines)
         yield f"Processing {len(headlines)} unique urls<br><br>"
         for i, h in enumerate(headlines, start=1):
             substitute_h = h.split(",")[-1]
@@ -228,7 +230,12 @@ def status():
                 'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'
                 }
             req = requests.get(h, headers)
+            time.sleep(5)
             print(req.status_code)
+            if req.status_code != 200:
+                driver.get(h)
+                time.sleep(5)
+                req = driver.page_source
             soup = BeautifulSoup(req.content, 'html.parser')
             try:
                 metadata = {
