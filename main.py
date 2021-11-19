@@ -175,6 +175,19 @@ htmlContent = """
 @app.route("/status/", methods=["POST"])
 def status():
     def generate():
+        resp = requests.get(
+            "https://proxy.webshare.io/api/proxy/list/",
+            headers={"Authorization": os.environ.get("PROXY_KEY")},
+            )
+        proxies = resp.json()["results"]
+        k = random.randint(0,len(proxies) - 1)
+        p = proxies[k]
+        print(f"{k}, {p['proxy_address']}")
+        prox = f"http://{p['username']}:{p['password']}@{p['proxy_address']}:{p['ports']['http']}"
+        os.environ["http_proxy"] = prox
+        os.environ["HTTP_PROXY"] = prox
+        os.environ["https_proxy"] = prox
+        os.environ["HTTPS_PROXY"] = prox
         msg = "<p>If you want to generate cards manually, visit <a href='https://metatags.io/' target='_blank'>metatags.io</a> or <a href='https://socialsharepreview.com' target='_blank'>socialsharepreview.com</a>.</p><p>A download button will appear at the bottom of the page when all URLs have been processed. But if you want to terminate the app and download the URLs/cards that have already been processed, click <a href='/manual_download/'>here</a>.</p>"
         text = request.form["text"]
         if not text:
@@ -200,11 +213,7 @@ def status():
         driver = webdriver.Chrome(
             executable_path=os.environ.get("CHROMEDRIVER_PATH"), options=chrome_options
         )
-        resp = requests.get(
-            "https://proxy.webshare.io/api/proxy/list/",
-            headers={"Authorization": os.environ.get("PROXY_KEY")},
-        )
-        proxies = resp.json()["results"]
+
         driver.implicitly_wait(5)
         x = 3840
         y = x / 16 * 10
