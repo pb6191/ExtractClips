@@ -1,3 +1,3 @@
 # README
 
-https://pnggen.herokuapp.com/
+https://gpng.herokuapp.com/
