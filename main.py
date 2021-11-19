@@ -287,7 +287,7 @@ def status():
             outF2.close()
             driver.get('file:///'+os.getcwd() + '//blank.html')
             driver.execute_script("document.body.style.zoom = '150%'")
-            time.sleep(12)
+            time.sleep(15)
             h = h.strip().strip("/")
             print(i, h)
             yield f"Processing url {i} of {len(headlines)}: {h}<br>"
