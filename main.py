@@ -229,10 +229,10 @@ def status():
             p = proxies[k]
             print(f"{k}, {p['proxy_address']}")
             prox = f"http://{p['username']}:{p['password']}@{p['proxy_address']}:{p['ports']['http']}"
-            os.environ["http_proxy"] = proxy
-            os.environ["HTTP_PROXY"] = proxy
-            os.environ["https_proxy"] = proxy
-            os.environ["HTTPS_PROXY"] = proxy
+            os.environ["http_proxy"] = prox
+            os.environ["HTTP_PROXY"] = prox
+            os.environ["https_proxy"] = prox
+            os.environ["HTTPS_PROXY"] = prox
             substitute_h = h.split(",")[-1]
             h = h.split(",")[0]
             headers = {
