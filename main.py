@@ -27,8 +27,9 @@ import random
 def wait(second):
     for i in range(second):
         time.sleep(1)
-        yield(f"sleep {i}")
-    yield "done sleeping"
+        print(f"sleep {i}")
+        yield "."
+    return "done sleeping"
 
 # reference - https://hackersandslackers.com/scraping-urls-with-beautifulsoup/
 def get_title(html):
