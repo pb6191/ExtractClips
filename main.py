@@ -24,7 +24,7 @@ from bs4 import BeautifulSoup
 import requests
 import random
 
-def wait(second):
+def waitFor(second):
     for i in range(second):
         time.sleep(1)
         print(f"sleep {i}")
@@ -255,7 +255,7 @@ def status():
             soup = BeautifulSoup(req.content, 'html.parser')
             if req.status_code != 200:
                 driver.get(h)
-                wait(10)
+                waitFor(10)
                 req = driver.page_source
                 soup = BeautifulSoup(req, 'html.parser')
             try:
@@ -294,7 +294,7 @@ def status():
             outF2.close()
             driver.get('file:///'+os.getcwd() + '//blank.html')
             driver.execute_script("document.body.style.zoom = '150%'")
-            wait(15)
+            waitFor(15)
             h = h.strip().strip("/")
             print(i, h)
             yield f"Processing url {i} of {len(headlines)}: {h}<br>"
