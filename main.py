@@ -24,13 +24,6 @@ from bs4 import BeautifulSoup
 import requests
 import random
 
-def waitFor(second):
-    for i in range(second):
-        time.sleep(1)
-        print(f"sleep {i}")
-        yield "."
-    return "done sleeping"
-
 # reference - https://hackersandslackers.com/scraping-urls-with-beautifulsoup/
 def get_title(html):
     """Scrape page title."""
@@ -255,7 +248,9 @@ def status():
             soup = BeautifulSoup(req.content, 'html.parser')
             if req.status_code != 200:
                 driver.get(h)
-                list(waitFor(10))
+                for i in range(10):
+                    time.sleep(1)
+                    yield "."
                 req = driver.page_source
                 soup = BeautifulSoup(req, 'html.parser')
             try:
@@ -294,7 +289,9 @@ def status():
             outF2.close()
             driver.get('file:///'+os.getcwd() + '//blank.html')
             driver.execute_script("document.body.style.zoom = '150%'")
-            list(waitFor(15))
+            for i in range(15):
+                time.sleep(1)
+                yield "."
             h = h.strip().strip("/")
             print(i, h)
             yield f"Processing url {i} of {len(headlines)}: {h}<br>"
