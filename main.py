@@ -198,6 +198,17 @@ def status():
         driver = webdriver.Chrome(
             executable_path=os.environ.get("CHROMEDRIVER_PATH"), options=chrome_options
         )
+        resp = requests.get(
+            "https://proxy.webshare.io/api/proxy/list/",
+            headers={"Authorization": os.environ.get("PROXY_KEY")},
+        )
+        proxies = resp.json()["results"]
+        k = random.randint(0,len(proxies) - 1)
+        p = proxies[k]
+        print(f"{k}, {p['proxy_address']}")
+        prox = f"http://{p['username']}:{p['password']}@{p['proxy_address']}:{p['ports']['http']}"
+        os.environ["http_proxy"] = prox
+        os.environ["https_proxy"] = prox
         driver.implicitly_wait(5)
         x = 3840
         y = x / 16 * 10
