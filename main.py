@@ -228,6 +228,7 @@ def status():
                 'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'
                 }
             req = requests.get(h, headers)
+            print(req.status_code)
             soup = BeautifulSoup(req.content, 'html.parser')
             try:
                 metadata = {
