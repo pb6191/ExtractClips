@@ -224,9 +224,14 @@ def status():
         headlines = text.splitlines()
         headlines = list(filter(None, headlines))
         headlines = list(set(headlines))
-        for l1, h1 in enumerate(headlines, start=1):
-            if validators.url(h1) != True:
-                headlines.remove(h1)
+        headlines_new = []
+        for hl in headlines:
+            if validators.url(hl):
+                headlines_new.append(hl)
+        headlines = headlines_new
+        if not headlines:
+            yield "Please provide correct URLs." + msg
+            return None
         random.shuffle(headlines)
         yield f"Processing {len(headlines)} unique urls<br><br>"
         for i, h in enumerate(headlines, start=1):
