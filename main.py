@@ -109,10 +109,6 @@ def index():
 @app.route("/download/", methods=["POST"])
 def download():
     os.remove("processing.txt")
-    os.environ["http_proxy"] = None
-    os.environ["HTTP_PROXY"] = None
-    os.environ["https_proxy"] = None
-    os.environ["HTTPS_PROXY"] = None
     os.system("unset no_proxy")
     os.system("unset NO_PROXY")
     return send_file("cards.zip", as_attachment=True, download_name="cards.zip")
