@@ -24,6 +24,7 @@ from bs4 import BeautifulSoup
 import requests
 import random
 
+# reference - https://hackersandslackers.com/scraping-urls-with-beautifulsoup/
 def get_title(html):
     """Scrape page title."""
     title = "None"
@@ -243,7 +244,6 @@ def status():
                 'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'
                 }
             req = requests.get(h, headers)
-            time.sleep(5)
             print(req.status_code)
             soup = BeautifulSoup(req.content, 'html.parser')
             if req.status_code != 200:
@@ -286,8 +286,8 @@ def status():
             outF2.write(htmlContent2)
             outF2.close()
             driver.get('file:///'+os.getcwd() + '//blank.html')
-            time.sleep(10)
             driver.execute_script("document.body.style.zoom = '150%'")
+            time.sleep(12)
             h = h.strip().strip("/")
             print(i, h)
             yield f"Processing url {i} of {len(headlines)}: {h}<br>"
@@ -314,8 +314,6 @@ def status():
 
             if i == len(headlines):
                 yield "<br>Done. cards.zip is ready for download. See <strong>_cards_.csv</strong> in the zipped folder for details.<br>"
-            else:
-                time.sleep(1)
 
             mode = "w" if i == 1 else "a"
             write_csv(
