@@ -248,7 +248,7 @@ def status():
             soup = BeautifulSoup(req.content, 'html.parser')
             if req.status_code != 200:
                 driver.get(h)
-                time.sleep(5)
+                time.sleep(10)
                 req = driver.page_source
                 soup = BeautifulSoup(req, 'html.parser')
             try:
@@ -273,7 +273,7 @@ def status():
                     }
             print(metadata['title'])
             print(metadata['description'])
-            print(metadata['sitename'])
+            print(metadata['image'])
             htmlContent2 = htmlContent.replace("REPLACE_TITLE", metadata['title'])
             #htmlContent2 = htmlContent.replace("REPLACE_TITLE", substitute_h)
             if isinstance(metadata['description'], list):
