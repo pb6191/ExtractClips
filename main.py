@@ -6,6 +6,7 @@ from os import environ
 import csv
 import re
 import urlexpander
+import validators
 from flask import (
     Flask,
     Response,
@@ -223,6 +224,9 @@ def status():
         headlines = text.splitlines()
         headlines = list(filter(None, headlines))
         headlines = list(set(headlines))
+        for l1, h1 in enumerate(headlines, start=1):
+            if validators.url(h1) != True:
+                headlines.remove(h1)
         random.shuffle(headlines)
         yield f"Processing {len(headlines)} unique urls<br><br>"
         for i, h in enumerate(headlines, start=1):
