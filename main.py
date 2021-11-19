@@ -255,7 +255,7 @@ def status():
             soup = BeautifulSoup(req.content, 'html.parser')
             if req.status_code != 200:
                 driver.get(h)
-                waitFor(10)
+                list(waitFor(10))
                 req = driver.page_source
                 soup = BeautifulSoup(req, 'html.parser')
             try:
@@ -294,7 +294,7 @@ def status():
             outF2.close()
             driver.get('file:///'+os.getcwd() + '//blank.html')
             driver.execute_script("document.body.style.zoom = '150%'")
-            waitFor(15)
+            list(waitFor(15))
             h = h.strip().strip("/")
             print(i, h)
             yield f"Processing url {i} of {len(headlines)}: {h}<br>"
