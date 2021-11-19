@@ -232,11 +232,12 @@ def status():
             req = requests.get(h, headers)
             time.sleep(5)
             print(req.status_code)
+            soup = BeautifulSoup(req.content, 'html.parser')
             if req.status_code != 200:
                 driver.get(h)
                 time.sleep(5)
                 req = driver.page_source
-            soup = BeautifulSoup(req.content, 'html.parser')
+                soup = BeautifulSoup(req, 'html.parser')
             try:
                 metadata = {
                     'title': get_title(soup),
