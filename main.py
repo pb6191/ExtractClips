@@ -109,8 +109,10 @@ def index():
 @app.route("/download/", methods=["POST"])
 def download():
     os.remove("processing.txt")
-    os.system("unset no_proxy")
-    os.system("unset NO_PROXY")
+    os.system("unset http_proxy")
+    os.system("unset https_proxy")
+    os.system("unset HTTP_PROXY")
+    os.system("unset HTTPS_PROXY")
     return send_file("cards.zip", as_attachment=True, download_name="cards.zip")
 
 
@@ -119,6 +121,11 @@ def manual_download():
     if os.path.isdir("extractedImgs"):
         shutil.make_archive("cards", "zip", "extractedImgs")
     if os.path.exists("cards.zip"):
+        os.remove("processing.txt")
+        os.system("unset http_proxy")
+        os.system("unset https_proxy")
+        os.system("unset HTTP_PROXY")
+        os.system("unset HTTPS_PROXY")
         return send_file("cards.zip", as_attachment=True, download_name="cards.zip")
     else:
         return "Whoops, something went wrong."
@@ -132,6 +139,10 @@ def reset():
         os.remove("cards.zip")
     if os.path.exists("processing.txt"):
         os.remove("processing.txt")
+    os.system("unset http_proxy")
+    os.system("unset https_proxy")
+    os.system("unset HTTP_PROXY")
+    os.system("unset HTTPS_PROXY")
     return "App has been reset."
 
 
