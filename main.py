@@ -83,19 +83,17 @@ def get_site_name(html, url):
 def get_favicon(html, url):
     """Scrape favicon."""
     if html.find("link", attrs={"rel": "icon"}):
-        favicon = html.find("link", attrs={"rel": "icon"}).get("href")
+        return html.find("link", attrs={"rel": "icon"}).get("href")
     elif html.find("link", attrs={"rel": "shortcut icon"}):
-        favicon = html.find("link", attrs={"rel": "shortcut icon"}).get("href")
+        return html.find("link", attrs={"rel": "shortcut icon"}).get("href")
     else:
-        favicon = f'{url.rstrip("/")}/favicon.ico'
-    return favicon
+        return f'{url.rstrip("/")}/favicon.ico'
 
 
 def get_theme_color(html):
     """Scrape brand color."""
     if html.find("meta", property="theme-color"):
-        color = html.find("meta", property="theme-color").get("content")
-        return color
+        return html.find("meta", property="theme-color").get("content")
     return "None"
 
 
@@ -237,10 +235,8 @@ def status():
         driver.implicitly_wait(5)
         x = 3840
         y = x / 16 * 10
-        outF = open("blankCSS.css", "w")
-        outF.write(cssContent)
-        outF.close()
-
+        with open("blankCSS.css", "w") as outF:
+            outF.write(cssContent)
         driver.set_window_size(x, y)
         driver.delete_all_cookies()
 
@@ -253,10 +249,7 @@ def status():
         headlines = text.splitlines()
         headlines = list(filter(None, headlines))
         headlines = list(set(headlines))
-        headlines_new = []
-        for hl in headlines:
-            if validators.url(hl):
-                headlines_new.append(hl)
+        headlines_new = [hl for hl in headlines if validators.url(hl)]
         headlines = headlines_new
         if not headlines:
             yield "<br>Please check your URLs.<br>"
@@ -328,9 +321,8 @@ def status():
                 "REPLACE_SITE", urlexpander.get_domain(h)
             )
             htmlContent2 = htmlContent2.replace("REPLACE_IMAGE", metadata["image"])
-            outF2 = open("blank.html", "w")
-            outF2.write(htmlContent2)
-            outF2.close()
+            with open("blank.html", "w") as outF2:
+                outF2.write(htmlContent2)
             driver.get("file:///" + os.getcwd() + "//blank.html")
             driver.execute_script("document.body.style.zoom = '150%'")
             for _ in range(15):
