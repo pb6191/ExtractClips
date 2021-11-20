@@ -145,7 +145,7 @@ def status():
         headlines_new = [hl for hl in headlines if validators.url(hl)]
         headlines = headlines_new
         if not headlines:
-            yield "<br>Please check your URLs.<br>"
+            yield "<br>Please provide valid URLs.<br>"
             return None
         random.shuffle(headlines)
         yield f"Processing {len(headlines)} unique urls<br><br>"
