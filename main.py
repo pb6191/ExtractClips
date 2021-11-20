@@ -24,8 +24,6 @@ from selenium import webdriver
 
 from htmlcss import cssContent, htmlContent
 
-print(htmlContent)
-
 # reference - https://hackersandslackers.com/scraping-urls-with-beautifulsoup/
 def get_title(html):
     """Scrape page title."""
