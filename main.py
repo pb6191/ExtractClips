@@ -352,7 +352,7 @@ def status():
                 filename = title + ".png"
             im1.save("extractedImgs/" + filename, "png")
 
-            yield f"Output: {filename}<br><br>"
+            yield f"<br>Output: {filename}<br><br>"
 
             if i == len(headlines):
                 yield "<br>Done. cards.zip is ready for download. See <strong>_cards_.csv</strong> in the zipped folder for details.<br>"
