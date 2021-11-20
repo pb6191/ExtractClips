@@ -257,6 +257,11 @@ def status():
         random.shuffle(headlines)
         yield f"Processing {len(headlines)} unique urls<br><br>"
         for i, h in enumerate(headlines, start=1):
+            h = h.split(",")[0].strip().strip("/")  # clean up url
+            yield f"Processing url {i} of {len(headlines)}: {h}<br>"
+            print(i, h)
+
+            # set proxy
             k = random.randint(0, len(proxies) - 1)
             p = proxies[k]
             print(f"{k}, {p['proxy_address']}")
@@ -265,7 +270,7 @@ def status():
             os.environ["HTTP_PROXY"] = prox
             os.environ["https_proxy"] = prox
             os.environ["HTTPS_PROXY"] = prox
-            h = h.split(",")[0]
+
             headers = {
                 "Access-Control-Allow-Origin": "*",
                 "Access-Control-Allow-Methods": "GET",
@@ -328,9 +333,6 @@ def status():
             for _ in range(15):
                 time.sleep(1)
                 yield "."
-            h = h.strip().strip("/")
-            print(i, h)
-            yield f"Processing url {i} of {len(headlines)}: {h}<br>"
 
             im = driver.get_screenshot_as_png()
             im = Image.open(BytesIO(im))
