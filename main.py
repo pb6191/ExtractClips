@@ -109,6 +109,10 @@ def index():
 @app.route("/download/", methods=["POST"])
 def download():
     os.remove("processing.txt")
+    os.environ["http_proxy"] = ""
+    os.environ["HTTP_PROXY"] = ""
+    os.environ["https_proxy"] = ""
+    os.environ["HTTPS_PROXY"] = ""
     del os.environ["http_proxy"]
     del os.environ["https_proxy"]
     del os.environ["HTTP_PROXY"]
@@ -122,6 +126,10 @@ def manual_download():
         shutil.make_archive("cards", "zip", "extractedImgs")
     if os.path.exists("cards.zip"):
         os.remove("processing.txt")
+        os.environ["http_proxy"] = ""
+        os.environ["HTTP_PROXY"] = ""
+        os.environ["https_proxy"] = ""
+        os.environ["HTTPS_PROXY"] = ""
         del os.environ["http_proxy"]
         del os.environ["https_proxy"]
         del os.environ["HTTP_PROXY"]
@@ -139,6 +147,10 @@ def reset():
         os.remove("cards.zip")
     if os.path.exists("processing.txt"):
         os.remove("processing.txt")
+    os.environ["http_proxy"] = ""
+    os.environ["HTTP_PROXY"] = ""
+    os.environ["https_proxy"] = ""
+    os.environ["HTTPS_PROXY"] = ""
     del os.environ["http_proxy"]
     del os.environ["https_proxy"]
     del os.environ["HTTP_PROXY"]
