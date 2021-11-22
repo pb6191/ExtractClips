@@ -177,7 +177,7 @@ def status():
                 soup = BeautifulSoup(req.content, "html.parser")
             else:
                 driver.get(h)
-                for _ in range(10):
+                for _ in range(0):
                     time.sleep(1)
                     yield "."
                 req = driver.page_source
@@ -226,7 +226,7 @@ def status():
                 outF2.write(htmlContent2)
             driver.get("file:///" + os.getcwd() + "//blank.html")
             driver.execute_script("document.body.style.zoom = '150%'")
-            for _ in range(15):
+            for _ in range(0):
                 time.sleep(1)
                 yield "."
 
