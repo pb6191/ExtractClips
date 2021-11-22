@@ -218,10 +218,13 @@ def status():
             htmlContent2 = htmlContent2.replace(
                 "REPLACE_SITE", urlexpander.get_domain(h)
             )
-            Picture_request = requests.get(metadata["image"])
-            with open("tempImage.jpg", 'wb') as f3:
-                f3.write(Picture_request.content)
-            htmlContent2 = htmlContent2.replace("REPLACE_IMAGE", "file:///" + os.getcwd() + "//tempImage.jpg")
+            if (validators.url(metadata["image"])):
+                Picture_request = requests.get(metadata["image"])
+                with open("tempImage.jpg", 'wb') as f3:
+                    f3.write(Picture_request.content)
+                htmlContent2 = htmlContent2.replace("REPLACE_IMAGE", "file:///" + os.getcwd() + "//tempImage.jpg")
+            else:
+                htmlContent2 = htmlContent2.replace("REPLACE_IMAGE", metadata["image"])
             with open("blank.html", "w") as outF2:
                 outF2.write(htmlContent2)
             driver.get("file:///" + os.getcwd() + "//blank.html")
