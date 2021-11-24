@@ -5,7 +5,7 @@ import shutil
 import time
 from io import BytesIO
 from os import environ
-
+from datetime import datetime
 import requests
 import urlexpander
 import validators
@@ -218,6 +218,8 @@ def status():
             htmlContent2 = htmlContent2.replace(
                 "REPLACE_SITE", urlexpander.get_domain(h)
             )
+            if os.path.exists("tempImage.jpg"):
+                os.remove("tempImage.jpg")
             if (validators.url(metadata["image"])):
                 Picture_request = requests.get(metadata["image"])
                 with open("tempImage.jpg", 'wb') as f3:
@@ -258,8 +260,8 @@ def status():
 
             mode = "w" if i == 1 else "a"
             write_csv(
-                header=["url", "filename", "headline"],
-                data=zip([h], [filename], [metadata["title"]]),
+                header=["url", "filename", "headline", "retrievalDate"],
+                data=zip([h], [filename], [metadata["title"]], [datetime.today().strftime('%Y-%m-%d')]),
                 path=os.path.join("extractedImgs", "_cards_.csv"),
                 mode=mode,
             )
