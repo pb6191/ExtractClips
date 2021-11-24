@@ -73,7 +73,7 @@ def get_theme_color(html):
 
 
 def write_csv(header, data, path, mode):
-    with open(path, mode) as f:
+    with open(path, mode, encoding="utf-8") as f:
         writer = csv.writer(f)
         if mode == "w":
             writer.writerow(header)
