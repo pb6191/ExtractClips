@@ -220,9 +220,14 @@ def status():
                 htmlContent2 = htmlContent.replace("REPLACE_TITLE", substituteH)
 
             if isinstance(metadata["description"], list):
-                htmlContent2 = htmlContent2.replace(
-                    "REPLACE_DESC", metadata["description"][0]
-                )
+                if len(metadata["description"]) >= 1:
+                    htmlContent2 = htmlContent2.replace(
+                        "REPLACE_DESC", metadata["description"][0]
+                    )
+                else:
+                    htmlContent2 = htmlContent2.replace(
+                        "REPLACE_DESC", " "
+                    )
             else:
                 htmlContent2 = htmlContent2.replace(
                     "REPLACE_DESC", metadata["description"]
