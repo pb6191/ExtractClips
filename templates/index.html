@@ -10,6 +10,10 @@
     <h3>Enter URLs in separate lines below to generate social media cards.</h3>
     <p>In case of issues with the app, contact us: Gordon Pennycook, Hause Lin, Puneet Bhargava </p>
     <form action="/status/" method="POST">
+        <input type="checkbox" id="replaceHeadline" name="replaceHeadline">
+        <label for="replaceHeadline"> Replace Headlines</label><br>
+        <input type="checkbox" id="removeSource" name="removeSource">
+        <label for="removeSource"> Remove Sources</label><br>
         <textarea name="text" rows="20" cols="100"></textarea>
         <p name="status" id="status">{{message}}</p>
         <input type="submit" value="Start processing" />

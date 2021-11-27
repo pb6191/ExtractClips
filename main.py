@@ -97,6 +97,14 @@ def status():
     def generate():
         msg = "<p>If you want to generate cards manually, visit <a href='https://metatags.io/' target='_blank'>metatags.io</a> or <a href='https://socialsharepreview.com' target='_blank'>socialsharepreview.com</a>.</p><p>A download button will appear at the bottom of the page when all URLs have been processed. But if you want to terminate the app and download the URLs/cards that have already been processed, click <a href='/manual_download/'>here</a>.</p>"
         text = request.form["text"]
+        if request.form.get('replaceHeadline'):
+            putInDifferentHeadline = 1
+        else:
+            putInDifferentHeadline = 0
+        if request.form.get('removeSource'):
+            deleteTheSource = 1
+        else:
+            deleteTheSource = 0
         if not text:
             yield "Please provide URLs." + msg
             return None
@@ -142,7 +150,7 @@ def status():
         headlines = text.splitlines()
         headlines = list(filter(None, headlines))
         headlines = list(set(headlines))
-        headlines_new = [hl for hl in headlines if validators.url(hl)]
+        headlines_new = [hl for hl in headlines if validators.url(hl.split("\t")[0])]
         headlines = headlines_new
         if not headlines:
             yield "<br>Please provide valid URLs.<br>"
@@ -150,7 +158,8 @@ def status():
         random.shuffle(headlines)
         yield f"Processing {len(headlines)} unique urls<br><br>"
         for i, h in enumerate(headlines, start=1):
-            h = h.split(",")[0].strip().strip("/")  # clean up url
+            substituteH = h.split("\t")[-1]
+            h = h.split("\t")[0].strip().strip("/")  # clean up url
             yield f"Processing url {i} of {len(headlines)}: {h}<br>"
             print(i, h)
 
@@ -205,7 +214,10 @@ def status():
             print(metadata["title"])
             print(metadata["description"])
             print(metadata["image"])
-            htmlContent2 = htmlContent.replace("REPLACE_TITLE", metadata["title"])
+            if putInDifferentHeadline == 0:
+                htmlContent2 = htmlContent.replace("REPLACE_TITLE", metadata["title"])
+            else:
+                htmlContent2 = htmlContent.replace("REPLACE_TITLE", substituteH)
 
             if isinstance(metadata["description"], list):
                 htmlContent2 = htmlContent2.replace(
@@ -215,9 +227,10 @@ def status():
                 htmlContent2 = htmlContent2.replace(
                     "REPLACE_DESC", metadata["description"]
                 )
-            htmlContent2 = htmlContent2.replace(
-                "REPLACE_SITE", urlexpander.get_domain(h)
-            )
+            if deleteTheSource == 0:
+                htmlContent2 = htmlContent2.replace("REPLACE_SITE", urlexpander.get_domain(h))
+            else:
+                htmlContent2 = htmlContent2.replace("REPLACE_SITE", " ")
             if os.path.exists("tempImage.jpg"):
                 os.remove("tempImage.jpg")
             if (validators.url(metadata["image"])):
