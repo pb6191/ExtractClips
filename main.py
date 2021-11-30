@@ -149,7 +149,7 @@ def status():
         cssContent3 = cssContent
         if redcFontSize == 1:
             cssContent2 = cssContent.replace("facebook__title{font-size:16px;line-height:20px}", "facebook__title{font-size:12px;line-height:20px}")
-            cssContent3 = cssContent2.replace("facebook__description{border-collapse:separate;color:#606770;direction:ltr;display:-webkit-box;font-family:Helvetica, Arial, sans-serif;font-size:14px;height:18px;line-height:20px;", "facebook__description{border-collapse:separate;color:#606770;direction:ltr;display:-webkit-box;font-family:Helvetica, Arial, sans-serif;font-size:10px;height:14px;line-height:20px;")
+            cssContent3 = cssContent2.replace("facebook__description{border-collapse:separate;color:#606770;direction:ltr;display:-webkit-box;font-family:Helvetica, Arial, sans-serif;font-size:14px;height:18px;line-height:20px;", "facebook__description{border-collapse:separate;color:#606770;direction:ltr;display:-webkit-box;font-family:Helvetica, Arial, sans-serif;font-size:10px;height:18px;line-height:20px;")
         with open("blankCSS.css", "w") as outF:
             outF.write(cssContent3)
         driver.set_window_size(x, y)
