@@ -148,8 +148,8 @@ def status():
         y = x / 16 * 10
         cssContent3 = cssContent
         if redcFontSize == 1:
-            cssContent2 = cssContent.replace("facebook__title{font-size:16px;line-height:20px}", "facebook__title{font-size:12px;line-height:16px}")
-            cssContent3 = cssContent2.replace("facebook__description{border-collapse:separate;color:#606770;direction:ltr;display:-webkit-box;font-family:Helvetica, Arial, sans-serif;font-size:14px;height:18px;line-height:20px;", "facebook__description{border-collapse:separate;color:#606770;direction:ltr;display:-webkit-box;font-family:Helvetica, Arial, sans-serif;font-size:10px;height:14px;line-height:16px;")
+            cssContent2 = cssContent.replace("facebook__title{font-size:16px;line-height:20px}", "facebook__title{font-size:12px;line-height:20px}")
+            cssContent3 = cssContent2.replace("facebook__description{border-collapse:separate;color:#606770;direction:ltr;display:-webkit-box;font-family:Helvetica, Arial, sans-serif;font-size:14px;height:18px;line-height:20px;", "facebook__description{border-collapse:separate;color:#606770;direction:ltr;display:-webkit-box;font-family:Helvetica, Arial, sans-serif;font-size:10px;height:14px;line-height:20px;")
         with open("blankCSS.css", "w") as outF:
             outF.write(cssContent3)
         driver.set_window_size(x, y)
@@ -272,13 +272,13 @@ def status():
             if (validators.url(metadata["image"])):
                 Picture_request = requests.get(metadata["image"])
                 with open("tempImage.jpg", 'wb') as f3:
-                    #tempContent = Image.open((Picture_request.content))
-                    #tempContent2 = tempContent.crop((0, 0, tempContent.width, 0.7*tempContent.height))
-                    print("aaacacac")
                     f3.write(Picture_request.content)
+                if putDiffImg == 1:
+                    tempContent = Image.open("tempImage.jpg")
+                    tempContent2 = tempContent.crop((0, 0, tempContent.width, 0.7*tempContent.height))
+                    tempContent2.save("tempImage.jpg", "jpg")
                 htmlContent2 = htmlContent2.replace("REPLACE_IMAGE", "file:///" + os.getcwd() + "//tempImage.jpg")
             else:
-                print("fbfbfbf")
                 htmlContent2 = htmlContent2.replace("REPLACE_IMAGE", metadata["image"])
             with open("blank.html", "w") as outF2:
                 outF2.write(htmlContent2)
@@ -304,6 +304,8 @@ def status():
                 filename = name + datetime.today().strftime('%Y-%m-%d-%H-%M-%S') +".png"
             else:
                 filename = title + datetime.today().strftime('%Y-%m-%d-%H-%M-%S') + ".png"
+            if putInDifferentHeadline == 1:
+                filename = substituteH + datetime.today().strftime('%Y-%m-%d-%H-%M-%S') + ".png"
             im1.save("extractedImgs/" + filename, "png")
 
             yield f"<br>Output: {filename}<br><br>"
