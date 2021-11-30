@@ -174,17 +174,17 @@ def status():
             if len(h.split("\t")) == 0:
                 substituteH = ""
                 substituteImg = ""
-            else if len(h.split("\t")) == 1:
+            elif len(h.split("\t")) == 1:
                 substituteH = ""
                 substituteImg = "" 
-            else if len(h.split("\t")) == 2:
+            elif len(h.split("\t")) == 2:
                 if putInDifferentHeadline == 1:
                     substituteH = h.split("\t")[-1]
                     substituteImg = "" 
                 if putDiffImg == 1:
                     substituteH = ""
                     substituteImg = h.split("\t")[-1]
-            else if len(h.split("\t")) >= 3:
+            elif len(h.split("\t")) >= 3:
                 substituteH = h.split("\t")[1]
                 substituteImg = h.split("\t")[2]
             h = h.split("\t")[0].strip().strip("/")  # clean up url
@@ -271,7 +271,9 @@ def status():
             if (validators.url(metadata["image"])):
                 Picture_request = requests.get(metadata["image"])
                 with open("tempImage.jpg", 'wb') as f3:
-                    f3.write(Picture_request.content)
+                    tempContent = Picture_request.content
+                    tempContent2 = tempContent.crop((0, 0, tempContent.width, 0.7*tempContent.height))
+                    f3.write(tempContent2)
                 htmlContent2 = htmlContent2.replace("REPLACE_IMAGE", "file:///" + os.getcwd() + "//tempImage.jpg")
             else:
                 htmlContent2 = htmlContent2.replace("REPLACE_IMAGE", metadata["image"])
