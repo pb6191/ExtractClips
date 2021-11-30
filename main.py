@@ -272,9 +272,9 @@ def status():
             if (validators.url(metadata["image"])):
                 Picture_request = requests.get(metadata["image"])
                 with open("tempImage.jpg", 'wb') as f3:
-                    tempContent = Image.open((Picture_request.content))
-                    tempContent2 = tempContent.crop((0, 0, tempContent.width, 0.7*tempContent.height))
-                    f3.write(tempContent2)
+                    #tempContent = Image.open((Picture_request.content))
+                    #tempContent2 = tempContent.crop((0, 0, tempContent.width, 0.7*tempContent.height))
+                    f3.write(Picture_request.content)
                 htmlContent2 = htmlContent2.replace("REPLACE_IMAGE", "file:///" + os.getcwd() + "//tempImage.jpg")
             else:
                 htmlContent2 = htmlContent2.replace("REPLACE_IMAGE", metadata["image"])
