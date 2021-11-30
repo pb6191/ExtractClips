@@ -267,17 +267,17 @@ def status():
                 htmlContent2 = htmlContent2.replace("REPLACE_SITE", urlexpander.get_domain(h))
             else:
                 htmlContent2 = htmlContent2.replace("REPLACE_SITE", " ")
-            if os.path.exists("tempImage.jpg"):
-                os.remove("tempImage.jpg")
+            if os.path.exists("tempImage.png"):
+                os.remove("tempImage.png")
             if (validators.url(metadata["image"])):
                 Picture_request = requests.get(metadata["image"])
-                with open("tempImage.jpg", 'wb') as f3:
+                with open("tempImage.png", 'wb') as f3:
                     f3.write(Picture_request.content)
                 if putDiffImg == 1:
-                    tempContent = Image.open("tempImage.jpg")
+                    tempContent = Image.open("tempImage.png")
                     tempContent2 = tempContent.crop((0, 0, tempContent.width, 0.7*tempContent.height))
-                    tempContent2.save("tempImage.jpg", "jpeg")
-                htmlContent2 = htmlContent2.replace("REPLACE_IMAGE", "file:///" + os.getcwd() + "//tempImage.jpg")
+                    tempContent2.save("tempImage.png", "png")
+                htmlContent2 = htmlContent2.replace("REPLACE_IMAGE", "file:///" + os.getcwd() + "//tempImage.png")
             else:
                 htmlContent2 = htmlContent2.replace("REPLACE_IMAGE", metadata["image"])
             with open("blank.html", "w") as outF2:
