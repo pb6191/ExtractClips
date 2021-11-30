@@ -276,7 +276,7 @@ def status():
                 if putDiffImg == 1:
                     tempContent = Image.open("tempImage.jpg")
                     tempContent2 = tempContent.crop((0, 0, tempContent.width, 0.7*tempContent.height))
-                    tempContent2.save("tempImage.jpg", "jpg")
+                    tempContent2.save("tempImage.jpg", "jpeg")
                 htmlContent2 = htmlContent2.replace("REPLACE_IMAGE", "file:///" + os.getcwd() + "//tempImage.jpg")
             else:
                 htmlContent2 = htmlContent2.replace("REPLACE_IMAGE", metadata["image"])
