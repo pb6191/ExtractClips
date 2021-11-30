@@ -274,9 +274,11 @@ def status():
                 with open("tempImage.jpg", 'wb') as f3:
                     #tempContent = Image.open((Picture_request.content))
                     #tempContent2 = tempContent.crop((0, 0, tempContent.width, 0.7*tempContent.height))
+                    print("aaacacac")
                     f3.write(Picture_request.content)
                 htmlContent2 = htmlContent2.replace("REPLACE_IMAGE", "file:///" + os.getcwd() + "//tempImage.jpg")
             else:
+                print("fbfbfbf")
                 htmlContent2 = htmlContent2.replace("REPLACE_IMAGE", metadata["image"])
             with open("blank.html", "w") as outF2:
                 outF2.write(htmlContent2)
