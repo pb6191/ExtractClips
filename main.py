@@ -42,7 +42,8 @@ def index():
 
 @app.route("/download/", methods=["POST"])
 def download():
-    os.remove("processing.txt")
+    if os.path.exists("processing.txt"):
+        os.remove("processing.txt")
     os.environ["http_proxy"] = ""
     os.environ["HTTP_PROXY"] = ""
     os.environ["https_proxy"] = ""
@@ -59,7 +60,8 @@ def manual_download():
     if os.path.isdir("extractedImgs"):
         shutil.make_archive("cards", "zip", "extractedImgs")
     if os.path.exists("cards.zip"):
-        os.remove("processing.txt")
+        if os.path.exists("processing.txt"):
+            os.remove("processing.txt")
         os.environ["http_proxy"] = ""
         os.environ["HTTP_PROXY"] = ""
         os.environ["https_proxy"] = ""
@@ -105,6 +107,14 @@ def status():
             deleteTheSource = 1
         else:
             deleteTheSource = 0
+        if request.form.get('reduceFont'):
+            redcFontSize = 1
+        else:
+            redcFontSize = 0
+        if request.form.get('replaceImages'):
+            putDiffImg = 1
+        else:
+            putDiffImg = 0
         if not text:
             yield "Please provide URLs." + msg
             return None
@@ -136,6 +146,9 @@ def status():
         driver.implicitly_wait(5)
         x = 3840
         y = x / 16 * 10
+        if redcFontSize == 1:
+            cssContent2 = cssContent.replace("facebook__title{font-size:16px;line-height:20px}", "facebook__title{font-size:12px;line-height:16px}")
+            cssContent = cssContent2.replace("facebook__description{border-collapse:separate;color:#606770;direction:ltr;display:-webkit-box;font-family:Helvetica, Arial, sans-serif;font-size:14px;height:18px;line-height:20px;", "facebook__description{border-collapse:separate;color:#606770;direction:ltr;display:-webkit-box;font-family:Helvetica, Arial, sans-serif;font-size:10px;height:14px;line-height:16px;")
         with open("blankCSS.css", "w") as outF:
             outF.write(cssContent)
         driver.set_window_size(x, y)
@@ -158,7 +171,22 @@ def status():
         random.shuffle(headlines)
         yield f"Processing {len(headlines)} unique urls<br><br>"
         for i, h in enumerate(headlines, start=1):
-            substituteH = h.split("\t")[-1]
+            if len(h.split("\t")) == 0:
+                substituteH = ""
+                substituteImg = ""
+            else if len(h.split("\t")) == 1:
+                substituteH = ""
+                substituteImg = "" 
+            else if len(h.split("\t")) == 2:
+                if putInDifferentHeadline == 1:
+                    substituteH = h.split("\t")[-1]
+                    substituteImg = "" 
+                if putDiffImg == 1:
+                    substituteH = ""
+                    substituteImg = h.split("\t")[-1]
+            else if len(h.split("\t")) >= 3:
+                substituteH = h.split("\t")[1]
+                substituteImg = h.split("\t")[2]
             h = h.split("\t")[0].strip().strip("/")  # clean up url
             yield f"Processing url {i} of {len(headlines)}: {h}<br>"
             print(i, h)
@@ -219,6 +247,8 @@ def status():
             else:
                 htmlContent2 = htmlContent.replace("REPLACE_TITLE", substituteH)
 
+            if putDiffImg == 1:
+                metadata["image"] = substituteImg
             if isinstance(metadata["description"], list):
                 if len(metadata["description"]) >= 1:
                     htmlContent2 = htmlContent2.replace(
@@ -266,9 +296,9 @@ def status():
 
             if len(title) < 3:  # in case there are problems with the title text
                 name = (h.split("?")[0].split("/")[-1]).replace(".html", "")
-                filename = name + ".png"
+                filename = name + datetime.today().strftime('%Y-%m-%d-%H-%M-%S') +".png"
             else:
-                filename = title + ".png"
+                filename = title + datetime.today().strftime('%Y-%m-%d-%H-%M-%S') + ".png"
             im1.save("extractedImgs/" + filename, "png")
 
             yield f"<br>Output: {filename}<br><br>"
