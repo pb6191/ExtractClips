@@ -99,19 +99,19 @@ def status():
     def generate():
         msg = "<p>If you want to generate cards manually, visit <a href='https://metatags.io/' target='_blank'>metatags.io</a> or <a href='https://socialsharepreview.com' target='_blank'>socialsharepreview.com</a>.</p><p>A download button will appear at the bottom of the page when all URLs have been processed. But if you want to terminate the app and download the URLs/cards that have already been processed, click <a href='/manual_download/'>here</a>.</p>"
         text = request.form["text"]
-        if request.form.get('replaceHeadline'):
+        if request.form.get("replaceHeadline"):
             putInDifferentHeadline = 1
         else:
             putInDifferentHeadline = 0
-        if request.form.get('removeSource'):
+        if request.form.get("removeSource"):
             deleteTheSource = 1
         else:
             deleteTheSource = 0
-        if request.form.get('reduceFont'):
+        if request.form.get("reduceFont"):
             redcFontSize = 1
         else:
             redcFontSize = 0
-        if request.form.get('replaceImages'):
+        if request.form.get("replaceImages"):
             putDiffImg = 1
         else:
             putDiffImg = 0
@@ -148,8 +148,14 @@ def status():
         y = x / 16 * 10
         cssContent3 = cssContent
         if redcFontSize == 1:
-            cssContent2 = cssContent.replace("facebook__title{font-size:16px;line-height:20px}", "facebook__title{font-size:12px;line-height:20px}")
-            cssContent3 = cssContent2.replace("facebook__description{border-collapse:separate;color:#606770;direction:ltr;display:-webkit-box;font-family:Helvetica, Arial, sans-serif;font-size:14px;height:18px;line-height:20px;", "facebook__description{border-collapse:separate;color:#606770;direction:ltr;display:-webkit-box;font-family:Helvetica, Arial, sans-serif;font-size:10px;height:18px;line-height:20px;")
+            cssContent2 = cssContent.replace(
+                "facebook__title{font-size:16px;line-height:20px}",
+                "facebook__title{font-size:12px;line-height:20px}",
+            )
+            cssContent3 = cssContent2.replace(
+                "facebook__description{border-collapse:separate;color:#606770;direction:ltr;display:-webkit-box;font-family:Helvetica, Arial, sans-serif;font-size:14px;height:18px;line-height:20px;",
+                "facebook__description{border-collapse:separate;color:#606770;direction:ltr;display:-webkit-box;font-family:Helvetica, Arial, sans-serif;font-size:10px;height:18px;line-height:20px;",
+            )
         with open("blankCSS.css", "w") as outF:
             outF.write(cssContent3)
         driver.set_window_size(x, y)
@@ -177,11 +183,11 @@ def status():
                 substituteImg = ""
             elif len(h.split("\t")) == 1:
                 substituteH = ""
-                substituteImg = "" 
+                substituteImg = ""
             elif len(h.split("\t")) == 2:
                 if putInDifferentHeadline == 1:
                     substituteH = h.split("\t")[-1]
-                    substituteImg = "" 
+                    substituteImg = ""
                 if putDiffImg == 1:
                     substituteH = ""
                     substituteImg = h.split("\t")[-1]
@@ -256,28 +262,32 @@ def status():
                         "REPLACE_DESC", metadata["description"][0]
                     )
                 else:
-                    htmlContent2 = htmlContent2.replace(
-                        "REPLACE_DESC", " "
-                    )
+                    htmlContent2 = htmlContent2.replace("REPLACE_DESC", " ")
             else:
                 htmlContent2 = htmlContent2.replace(
                     "REPLACE_DESC", metadata["description"]
                 )
             if deleteTheSource == 0:
-                htmlContent2 = htmlContent2.replace("REPLACE_SITE", urlexpander.get_domain(h))
+                htmlContent2 = htmlContent2.replace(
+                    "REPLACE_SITE", urlexpander.get_domain(h)
+                )
             else:
                 htmlContent2 = htmlContent2.replace("REPLACE_SITE", " ")
             if os.path.exists("tempImage.png"):
                 os.remove("tempImage.png")
-            if (validators.url(metadata["image"])):
+            if validators.url(metadata["image"]):
                 Picture_request = requests.get(metadata["image"])
-                with open("tempImage.png", 'wb') as f3:
+                with open("tempImage.png", "wb") as f3:
                     f3.write(Picture_request.content)
                 if putDiffImg == 1:
                     tempContent = Image.open("tempImage.png")
-                    tempContent2 = tempContent.crop((0, 0, tempContent.width, 0.7*tempContent.height))
+                    tempContent2 = tempContent.crop(
+                        (0, 0, tempContent.width, 0.7 * tempContent.height)
+                    )
                     tempContent2.save("tempImage.png", "png")
-                htmlContent2 = htmlContent2.replace("REPLACE_IMAGE", "file:///" + os.getcwd() + "//tempImage.png")
+                htmlContent2 = htmlContent2.replace(
+                    "REPLACE_IMAGE", "file:///" + os.getcwd() + "//tempImage.png"
+                )
             else:
                 htmlContent2 = htmlContent2.replace("REPLACE_IMAGE", metadata["image"])
             with open("blank.html", "w") as outF2:
@@ -301,12 +311,21 @@ def status():
 
             if len(title) < 3:  # in case there are problems with the title text
                 name = (h.split("?")[0].split("/")[-1]).replace(".html", "")
-                filename = name + datetime.today().strftime('%Y-%m-%d-%H-%M-%S') +".png"
+                filename = (
+                    name + datetime.today().strftime("%Y-%m-%d-%H-%M-%S") + ".jpg"
+                )
             else:
-                filename = title + datetime.today().strftime('%Y-%m-%d-%H-%M-%S') + ".png"
+                filename = (
+                    title + datetime.today().strftime("%Y-%m-%d-%H-%M-%S") + ".jpg"
+                )
             if putInDifferentHeadline == 1:
-                filename = substituteH + datetime.today().strftime('%Y-%m-%d-%H-%M-%S') + ".png"
-            im1.save("extractedImgs/" + filename, "png")
+                filename = (
+                    substituteH
+                    + datetime.today().strftime("%Y-%m-%d-%H-%M-%S")
+                    + ".jpg"
+                )
+            rgb_im = im1.convert("RGB")
+            rgb_im.save("extractedImgs/" + filename, optimize=True, quality=70)
 
             yield f"<br>Output: {filename}<br><br>"
 
@@ -316,7 +335,12 @@ def status():
             mode = "w" if i == 1 else "a"
             write_csv(
                 header=["url", "filename", "headline", "retrievalDate"],
-                data=zip([h], [filename], [metadata["title"]], [datetime.today().strftime('%Y-%m-%d')]),
+                data=zip(
+                    [h],
+                    [filename],
+                    [metadata["title"]],
+                    [datetime.today().strftime("%Y-%m-%d")],
+                ),
                 path=os.path.join("extractedImgs", "_cards_.csv"),
                 mode=mode,
             )
