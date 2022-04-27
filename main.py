@@ -300,7 +300,8 @@ def status():
 
             im = driver.get_screenshot_as_png()
             im = Image.open(BytesIO(im))
-            im1 = im.crop((0, 0, x * 0.20235, x * 0.1377))
+            # im1 = im.crop((0, 0, x * 0.20235, x * 0.1377))
+            im1 = im.crop((0, 0, 750, 500))
             # im1 = ImageOps.expand(im1, border=5, fill=(255, 255, 255))
 
             # get image title name
