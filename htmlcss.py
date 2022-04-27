@@ -13,7 +13,7 @@ htmlContent = """
 <body class="application index vanilla-modal vsc-initialized">
 
   <div id="facebook" class="metadata-group__display is-active">
-    <div class="card-seo-facebook" style="border-radius:5.99998px;margin:20px">
+    <div class="card-seo-facebook" style="border-radius:5.99998px;margin:13px">
       <div class="card-seo-facebook__image js-preview-image" style="background-image: url(REPLACE_IMAGE)"></div>
       <div class="card-seo-facebook__text">
         <span class="card-seo-facebook__link js-preview-domain">REPLACE_SITE</span>
