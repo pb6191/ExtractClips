@@ -2,7 +2,14 @@
 
 App link: https://gpng.herokuapp.com/
 
-Run Flask app locally: `python main.py`
+Run Flask app locally 
+
+```
+# download/install correct version of chromedriver for selenium
+# https://chromedriver.chromium.org/downloads
+export CHROMEDRIVER_PATH="./chromedriver_v101"  
+python main.py
+```
 
 ## Basic Usage (no options checked)
 
