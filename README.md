@@ -23,7 +23,7 @@ https://www.foxnews.com/entertainment/betty-white-great-spirits-filming-tribute-
 
 ## Reduce font size
 
-Check this box to reduce the font size of the headline and description texts.
+Check this box to reduce the font size of the headline and of the description texts.
 
 ## Replace Headlines (replace headline text)
 
