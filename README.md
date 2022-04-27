@@ -5,7 +5,7 @@ App link: https://gpng.herokuapp.com/
 Run Flask app locally 
 
 ```
-# download/install correct version of chromedriver for selenium
+# download/install correct version of chromedriver for selenium scraper
 # https://chromedriver.chromium.org/downloads
 export CHROMEDRIVER_PATH="./chromedriver_v101"  
 python main.py
