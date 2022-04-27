@@ -2,6 +2,8 @@
 
 App link: https://gpng.herokuapp.com/
 
+Run Flask app locally: `python main.py`
+
 ## Basic Usage (no options checked)
 
 Enter one headline/url per line to generate a card/image for each headline/url. If you save the urls as separate rows in a spreadsheet, you can simply copy that column and paste it to the app. See this [Google Sheets for an example](https://docs.google.com/spreadsheets/d/1vWyNththog-n5oOV18i4kj_hlUEsFkqI9KhCO3p3O2I/edit?usp=sharing).
