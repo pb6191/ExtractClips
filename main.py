@@ -335,12 +335,12 @@ def status():
 
             mode = "w" if i == 1 else "a"
             write_csv(
-                header=["url", "filename", "headline", "retrievalDate"],
+                header=["source_url", "filename", "retrieve_date", "headline"],
                 data=zip(
                     [h],
                     [filename],
-                    [metadata["title"]],
                     [datetime.today().strftime("%Y-%m-%d")],
+                    [metadata["title"]],
                 ),
                 path=os.path.join("extractedImgs", "_cards_.csv"),
                 mode=mode,
