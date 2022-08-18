@@ -198,6 +198,9 @@ def status():
             yield f"Processing url {i} of {len(headlines)}: {h}<br>"
             print(i, h)
 
+            for _ in range(1):
+                time.sleep(2)
+                yield "."
             # set proxy
             k = random.randint(0, len(proxies) - 1)
             p = proxies[k]
