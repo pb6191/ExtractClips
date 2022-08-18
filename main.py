@@ -216,6 +216,9 @@ def status():
                 "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0",
             }
             req = requests.get(h, headers)
+            for _ in range(1):
+                time.sleep(2)
+                yield "."
             print(req.status_code)
             if req.status_code == 200:
                 soup = BeautifulSoup(req.content, "html.parser")
