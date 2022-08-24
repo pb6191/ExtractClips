@@ -45,7 +45,7 @@ def get_image(html, url):
             url.split("//")[0]
             + "//"
             + url.split("//")[1].split("/")[0]
-            + html.html.find("figure").img.get("src")
+            + html.find("figure").img.get("src")
         )
         print("img path 5")
     elif html.find("meta", property="og:image"):
