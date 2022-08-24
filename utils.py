@@ -41,6 +41,7 @@ def get_image(html, url):
     """Scrape share image."""
     image = "None"
     if "realrawnews" in url:
+        print("init img path 5")
         image = (
             url.split("//")[0]
             + "//"
