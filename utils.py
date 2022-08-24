@@ -46,7 +46,7 @@ def get_image(html, url):
             url.split("//")[0]
             + "//"
             + url.split("//")[1].split("/")[0]
-            + html.find("figure").img.get("src")
+            + html.find("img", {"class": "entry-thumb td-modal-image"}).get("src")
         )
         print("img path 5")
     elif html.find("meta", property="og:image"):
