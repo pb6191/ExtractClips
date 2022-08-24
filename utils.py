@@ -6,12 +6,16 @@ def get_title(html):
     title = "None"
     if html.find("meta", property="og:title"):
         title = html.find("meta", property="og:title").get("content")
+        print("title path 1")
     elif html.title.string:
         title = html.title.string
+        print("title path 2")
     elif html.find("meta", property="twitter:title"):
         title = html.find("meta", property="twitter:title").get("content")
+        print("title path 3")
     elif html.find("h1"):
         title = html.find("h1").string
+        print("title path 4")
     return title
 
 
@@ -20,12 +24,16 @@ def get_description(html):
     description = "None"
     if html.find("meta", property="og:description"):
         description = html.find("meta", property="og:description").get("content")
+        print("desc path 1")
     elif html.find("meta", property="description"):
         description = html.find("meta", property="description").get("content")
+        print("desc path 2")
     elif html.find("meta", property="twitter:description"):
         description = html.find("meta", property="twitter:description").get("content")
+        print("desc path 3")
     elif html.find("p"):
         description = html.find("p").contents
+        print("desc path 4")
     return description
 
 
@@ -34,12 +42,16 @@ def get_image(html, url):
     image = "None"
     if html.find("meta", property="og:image"):
         image = html.find("meta", property="og:image").get("content")
+        print("img path 1")
     elif html.find("meta", property="image"):
         image = html.find("meta", property="image").get("content")
+        print("img path 2")
     elif html.find("meta", property="twitter:image"):
         image = html.find("meta", property="twitter:image").get("content")
+        print("img path 3")
     elif html.find("img", src=True):
         image = html.find_all("img").get("src")
+        print("img path 4")
     else:
         image = (
             url.split("//")[0]
@@ -47,6 +59,7 @@ def get_image(html, url):
             + url.split("//")[1].split("/")[0]
             + html.html.find("figure").img.get("src")
         )
+        print("img path 5")
     return image
 
 
