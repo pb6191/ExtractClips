@@ -232,12 +232,11 @@ def status():
                     yield "."
                 req = driver.page_source
                 soup = BeautifulSoup(req, "html.parser")
-            yield (soup)
             try:
                 metadata = {
                     "title": get_title(soup),
                     "description": get_description(soup),
-                    "image": get_image(soup),
+                    "image": get_image(soup, h),
                     "favicon": get_favicon(soup, h),
                     "sitename": get_site_name(soup, h),
                     "color": get_theme_color(soup),

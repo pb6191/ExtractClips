@@ -29,7 +29,7 @@ def get_description(html):
     return description
 
 
-def get_image(html):
+def get_image(html, url):
     """Scrape share image."""
     image = "None"
     if html.find("meta", property="og:image"):
@@ -40,6 +40,13 @@ def get_image(html):
         image = html.find("meta", property="twitter:image").get("content")
     elif html.find("img", src=True):
         image = html.find_all("img").get("src")
+    else:
+        image = (
+            url.split("//")[0]
+            + "//"
+            + url.split("//")[1].split("/")[0]
+            + html.html.find("figure").img.get("src")
+        )
     return image
 
 
