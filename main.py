@@ -232,7 +232,7 @@ def status():
                     yield "."
                 req = driver.page_source
                 soup = BeautifulSoup(req, "html.parser")
-            print(soup)
+            yield (soup)
             try:
                 metadata = {
                     "title": get_title(soup),
