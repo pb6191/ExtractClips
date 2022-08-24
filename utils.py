@@ -40,7 +40,15 @@ def get_description(html):
 def get_image(html, url):
     """Scrape share image."""
     image = "None"
-    if html.find("meta", property="og:image"):
+    if "realrawnews" in url:
+        image = (
+            url.split("//")[0]
+            + "//"
+            + url.split("//")[1].split("/")[0]
+            + html.html.find("figure").img.get("src")
+        )
+        print("img path 5")
+    elif html.find("meta", property="og:image"):
         image = html.find("meta", property="og:image").get("content")
         print("img path 1")
     elif html.find("meta", property="image"):
@@ -52,14 +60,6 @@ def get_image(html, url):
     elif html.find("img", src=True):
         image = html.find_all("img").get("src")
         print("img path 4")
-    else:
-        image = (
-            url.split("//")[0]
-            + "//"
-            + url.split("//")[1].split("/")[0]
-            + html.html.find("figure").img.get("src")
-        )
-        print("img path 5")
     return image
 
 
