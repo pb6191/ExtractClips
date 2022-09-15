@@ -117,10 +117,8 @@ def status():
             putDiffImg = 0
         if not text:
             yield "Please provide URLs." + msg
-            return None
         if os.path.exists("processing.txt"):
             yield "Someone else might be using the app right now. Try again later."
-            return None
 
         yield "Initializing..." + msg
 
@@ -176,7 +174,7 @@ def status():
             yield "<br>Please provide valid URLs.<br>"
             return None
         random.shuffle(headlines)
-        yield "Processing {len(headlines)} unique urls<br><br>"
+        yield "Processing " + str(len(headlines)) + " unique urls<br><br>"
         for i, h in enumerate(headlines, start=1):
             if len(h.split("\t")) == 0:
                 substituteH = ""
@@ -195,7 +193,9 @@ def status():
                 substituteH = h.split("\t")[1]
                 substituteImg = h.split("\t")[2]
             h = h.split("\t")[0].strip().strip("/")  # clean up url
-            yield "Processing url {i} of {len(headlines)}: {h}<br>"
+            yield "Processing url " + str(i) + " of " + str(
+                len(headlines)
+            ) + ": " + str(h) + "<br>"
             print(i, h)
 
             for _ in range(1):
@@ -335,7 +335,7 @@ def status():
             rgb_im = im1.convert("RGB")
             rgb_im.save("extractedImgs/" + filename, optimize=True, quality=70)
 
-            yield "<br>Output: {filename}<br><br>"
+            yield "<br>Output: " + str(filename) + "<br><br>"
 
             if i == len(headlines):
                 yield "<br>Done. cards.zip is ready for download. See <strong>_cards_.csv</strong> in the zipped folder for details.<br>"
