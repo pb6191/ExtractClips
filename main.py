@@ -117,8 +117,10 @@ def status():
             putDiffImg = 0
         if not text:
             yield "Please provide URLs." + msg
+            # return None
         if os.path.exists("processing.txt"):
             yield "Someone else might be using the app right now. Try again later."
+            # return None
 
         yield "Initializing..." + msg
 
@@ -172,7 +174,7 @@ def status():
         headlines = headlines_new
         if not headlines:
             yield "<br>Please provide valid URLs.<br>"
-            return None
+            # return None
         random.shuffle(headlines)
         yield "Processing " + str(len(headlines)) + " unique urls<br><br>"
         for i, h in enumerate(headlines, start=1):
