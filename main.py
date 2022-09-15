@@ -325,6 +325,7 @@ def status():
                 filename = (
                     title + datetime.today().strftime("%Y-%m-%d-%H-%M-%S") + ".jpg"
                 )
+
             if putInDifferentHeadline == 1:
                 filename = (
                     substituteH
