@@ -21,6 +21,7 @@ from flask import (
 from PIL import Image
 from selenium import webdriver
 
+
 from htmlcss import cssContent, htmlContent
 from utils import (
     get_description,
