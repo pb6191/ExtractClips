@@ -11,5 +11,10 @@
             "src": "/(.*)",
             "dest": "/"
         }
+    ],
+    "functions": [
+        {
+            "excludeFiles": "{public,.next,pages,images,_next,gen}/**"
+        }
     ]
 }
