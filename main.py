@@ -21,7 +21,6 @@ from flask import (
 from PIL import Image
 from selenium import webdriver
 
-
 from htmlcss import cssContent, htmlContent
 from utils import (
     get_description,
@@ -118,10 +117,10 @@ def status():
             putDiffImg = 0
         if not text:
             yield "Please provide URLs." + msg
-            # return None
+            return None
         if os.path.exists("processing.txt"):
             yield "Someone else might be using the app right now. Try again later."
-            # return None
+            return None
 
         yield "Initializing..." + msg
 
@@ -175,9 +174,9 @@ def status():
         headlines = headlines_new
         if not headlines:
             yield "<br>Please provide valid URLs.<br>"
-            # return None
+            return None
         random.shuffle(headlines)
-        yield "Processing " + str(len(headlines)) + " unique urls<br><br>"
+        yield f"Processing {len(headlines)} unique urls<br><br>"
         for i, h in enumerate(headlines, start=1):
             if len(h.split("\t")) == 0:
                 substituteH = ""
@@ -196,9 +195,7 @@ def status():
                 substituteH = h.split("\t")[1]
                 substituteImg = h.split("\t")[2]
             h = h.split("\t")[0].strip().strip("/")  # clean up url
-            yield "Processing url " + str(i) + " of " + str(
-                len(headlines)
-            ) + ": " + str(h) + "<br>"
+            yield f"Processing url {i} of {len(headlines)}: {h}<br>"
             print(i, h)
 
             for _ in range(1):
@@ -207,8 +204,8 @@ def status():
             # set proxy
             k = random.randint(0, len(proxies) - 1)
             p = proxies[k]
-            print("{k}, {p['proxy_address']}")
-            prox = "http://{p['username']}:{p['password']}@{p['proxy_address']}:{p['ports']['http']}"
+            print(f"{k}, {p['proxy_address']}")
+            prox = f"http://{p['username']}:{p['password']}@{p['proxy_address']}:{p['ports']['http']}"
             os.environ["http_proxy"] = prox
             os.environ["HTTP_PROXY"] = prox
             os.environ["https_proxy"] = prox
@@ -328,7 +325,6 @@ def status():
                 filename = (
                     title + datetime.today().strftime("%Y-%m-%d-%H-%M-%S") + ".jpg"
                 )
-
             if putInDifferentHeadline == 1:
                 filename = (
                     substituteH
@@ -338,7 +334,7 @@ def status():
             rgb_im = im1.convert("RGB")
             rgb_im.save("extractedImgs/" + filename, optimize=True, quality=70)
 
-            yield "<br>Output: " + str(filename) + "<br><br>"
+            yield f"<br>Output: {filename}<br><br>"
 
             if i == len(headlines):
                 yield "<br>Done. cards.zip is ready for download. See <strong>_cards_.csv</strong> in the zipped folder for details.<br>"
