@@ -1,6 +1,6 @@
 # Example usage
 
-App link: https://gpng.herokuapp.com/
+App link: https://gpng-jiwd.onrender.com/
 
 Run Flask app locally 
 
