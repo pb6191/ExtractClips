@@ -59,20 +59,19 @@ def download():
 def manual_download():
     if os.path.isdir("extractedImgs"):
         shutil.make_archive("cards", "zip", "extractedImgs")
-    if os.path.exists("cards.zip"):
-        if os.path.exists("processing.txt"):
-            os.remove("processing.txt")
-        os.environ["http_proxy"] = ""
-        os.environ["HTTP_PROXY"] = ""
-        os.environ["https_proxy"] = ""
-        os.environ["HTTPS_PROXY"] = ""
-        del os.environ["http_proxy"]
-        del os.environ["https_proxy"]
-        del os.environ["HTTP_PROXY"]
-        del os.environ["HTTPS_PROXY"]
-        return send_file("cards.zip", as_attachment=True, download_name="cards.zip")
-    else:
+    if not os.path.exists("cards.zip"):
         return "Whoops, something went wrong."
+    if os.path.exists("processing.txt"):
+        os.remove("processing.txt")
+    os.environ["http_proxy"] = ""
+    os.environ["HTTP_PROXY"] = ""
+    os.environ["https_proxy"] = ""
+    os.environ["HTTPS_PROXY"] = ""
+    del os.environ["http_proxy"]
+    del os.environ["https_proxy"]
+    del os.environ["HTTP_PROXY"]
+    del os.environ["HTTPS_PROXY"]
+    return send_file("cards.zip", as_attachment=True, download_name="cards.zip")
 
 
 @app.route("/reset/", methods=["GET"])
@@ -97,24 +96,12 @@ def status():
     def generate():
         msg = "<p>If you want to generate cards manually, visit <a href='https://metatags.io/' target='_blank'>metatags.io</a> or <a href='https://socialsharepreview.com' target='_blank'>socialsharepreview.com</a>.</p><p>A download button will appear at the bottom of the page when all URLs have been processed. But if you want to terminate the app and download the URLs/cards that have already been processed, click <a href='/manual_download/'>here</a>.</p>"
         text = request.form["text"]
-        if request.form.get("replaceHeadline"):
-            putInDifferentHeadline = 1
-        else:
-            putInDifferentHeadline = 0
-        if request.form.get("removeSource"):
-            deleteTheSource = 1
-        else:
-            deleteTheSource = 0
-        if request.form.get("reduceFont"):
-            redcFontSize = 1
-        else:
-            redcFontSize = 0
-        if request.form.get("replaceImages"):
-            putDiffImg = 1
-        else:
-            putDiffImg = 0
+        putInDifferentHeadline = 1 if request.form.get("replaceHeadline") else 0
+        deleteTheSource = 1 if request.form.get("removeSource") else 0
+        redcFontSize = 1 if request.form.get("reduceFont") else 0
+        putDiffImg = 1 if request.form.get("replaceImages") else 0
         if not text:
-            yield "Please provide URLs." + msg
+            yield f"Please provide URLs.{msg}"
             return None
         if os.path.exists("processing.txt"):
             yield "Someone else might be using the app right now. Try again later."
@@ -305,7 +292,7 @@ def status():
             im = driver.get_screenshot_as_png()
             im = Image.open(BytesIO(im))
             # im1 = im.crop((0, 0, x * 0.20235, x * 0.1377))
-            area = (10, 10, 1500, 1000)
+            area = (10, 10, 1490, 1000)
             im1 = im.crop(area)
             # im1 = ImageOps.expand(im1, border=5, fill=(255, 255, 255))
 
@@ -339,7 +326,7 @@ def status():
                 data=zip(
                     [h],
                     [filename],
-                    [datetime.today().strftime("%Y-%m-%d")],
+                    [datetime.now().strftime("%Y-%m-%d")],
                     [metadata["title"]],
                 ),
                 path=os.path.join("extractedImgs", "_cards_.csv"),
