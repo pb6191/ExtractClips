@@ -317,19 +317,11 @@ def status():
 
             if len(title) < 3:  # in case there are problems with the title text
                 name = (h.split("?")[0].split("/")[-1]).replace(".html", "")
-                filename = (
-                    name + datetime.today().strftime("%Y-%m-%d-%H-%M-%S") + ".jpg"
-                )
+                filename = name + ".jpg"
             else:
-                filename = (
-                    title + datetime.today().strftime("%Y-%m-%d-%H-%M-%S") + ".jpg"
-                )
+                filename = title + ".jpg"
             if putInDifferentHeadline == 1:
-                filename = (
-                    substituteH
-                    + datetime.today().strftime("%Y-%m-%d-%H-%M-%S")
-                    + ".jpg"
-                )
+                filename = substituteH + ".jpg"
             rgb_im = im1.convert("RGB")
             new_width = int(rgb_im.width // 2)
             new_height = int(rgb_im.height // 2)
