@@ -32,9 +32,15 @@ from utils import (
     write_csv,
 )
 
-from pathlib import Path
+import pandas as pd
 
 app = Flask(__name__)
+
+from pathlib import Path
+
+x = Path("processing.txt")
+if x.exists():
+    x.unlink()
 
 
 @app.route("/")
@@ -44,6 +50,8 @@ def index():
 
 @app.route("/download/", methods=["POST"])
 def download():
+    if os.path.exists("processing.txt"):
+        os.remove("processing.txt")
     os.environ["http_proxy"] = ""
     os.environ["HTTP_PROXY"] = ""
     os.environ["https_proxy"] = ""
@@ -81,6 +89,8 @@ def reset():
         shutil.rmtree("extractedImgs")
     if os.path.exists("cards.zip"):
         os.remove("cards.zip")
+    if os.path.exists("processing.txt"):
+        os.remove("processing.txt")
     os.environ["http_proxy"] = ""
     os.environ["HTTP_PROXY"] = ""
     os.environ["https_proxy"] = ""
@@ -97,22 +107,6 @@ def status():
     def generate():
         msg = "<p>If you want to generate cards manually, visit <a href='https://metatags.io/' target='_blank'>metatags.io</a> or <a href='https://socialsharepreview.com' target='_blank'>socialsharepreview.com</a>.</p><p>A download button will appear at the bottom of the page when all URLs have been processed. But if you want to terminate the app and download the URLs/cards that have already been processed, click <a href='/manual_download/'>here</a>.</p>"
         text = request.form["text"]
-        if request.form.get("replaceHeadline"):
-            putInDifferentHeadline = 1
-        else:
-            putInDifferentHeadline = 0
-        if request.form.get("removeSource"):
-            deleteTheSource = 1
-        else:
-            deleteTheSource = 0
-        if request.form.get("reduceFont"):
-            redcFontSize = 1
-        else:
-            redcFontSize = 0
-        if request.form.get("replaceImages"):
-            putDiffImg = 1
-        else:
-            putDiffImg = 0
         if not text:
             yield "Please provide URLs." + msg
             return None
@@ -130,12 +124,14 @@ def status():
         chrome_options.binary_location = (
             "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
         )
+
         chrome_options.add_argument("--headless")
         chrome_options.add_argument("--disable-dev-shm-usage")
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-gpu")
         chrome_options.add_argument("enable-automation")
         driver = webdriver.Chrome(options=chrome_options)
+
         resp = requests.get(
             "https://proxy.webshare.io/api/proxy/list/",
             headers={"Authorization": "b85sk4kkpe5swus352xfixpyta2tbg9e0yv9p589"},
@@ -176,6 +172,7 @@ def status():
         random.shuffle(headlines)
         yield f"Processing {len(headlines)} unique urls<br><br>"
         for i, h in enumerate(headlines, start=1):
+            print(h)
             if len(h.split("\t")) == 0:
                 substituteH = ""
                 substituteImg = ""
@@ -225,8 +222,8 @@ def status():
                 soup = BeautifulSoup(req.content, "html.parser")
             else:
                 driver.get(h)
-                for _ in range(5):
-                    time.sleep(1)
+                for _ in range(1):
+                    time.sleep(2)
                     yield "."
                 req = driver.page_source
                 soup = BeautifulSoup(req, "html.parser")
@@ -298,14 +295,14 @@ def status():
                 outF2.write(htmlContent2)
             driver.get("file:///" + os.getcwd() + "//blank.html")
             driver.execute_script("document.body.style.zoom = '150%'")
-            for _ in range(5):
+            for _ in range(2):
                 time.sleep(1)
                 yield "."
 
             im = driver.get_screenshot_as_png()
             im = Image.open(BytesIO(im))
-            # im1 = im.crop((0, 0, x * 0.20235, x * 0.1377))
             area = (10, 10, 1500, 1000)
+            # im1 = im.crop((0, 0, x * 0.20235, x * 0.1377))
             im1 = im.crop(area)
             # im1 = ImageOps.expand(im1, border=5, fill=(255, 255, 255))
 
@@ -363,7 +360,4 @@ def status():
 
 
 if __name__ == "__main__":
-    p = Path("processing.txt")
-    if p.exists():
-        p.unlink()
     app.run(debug=True, host="0.0.0.0", port=environ.get("PORT", 1313))
