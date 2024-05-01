@@ -125,7 +125,7 @@ def status():
         driver = webdriver.Chrome(options=chrome_options)
         resp = requests.get(
             "https://proxy.webshare.io/api/proxy/list/",
-            headers={"Authorization": "b85sk4kkpe5swus352xfixpyta2tbg9e0yv9p589"},
+            headers={"Authorization": "b85sk4kdfdsf"},
         )
         proxies = resp.json()["results"]
         driver.implicitly_wait(5)
